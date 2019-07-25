@@ -1,6 +1,6 @@
 <template>
     <div id="webTable">
-        <el-row>
+        <el-row class="buttonList">
             <el-button
                 type="primary"
                 icon="el-icon-plus"
@@ -9,7 +9,7 @@
                 circle>
             </el-button>
         </el-row>
-        <el-row>
+        <el-row class="table">
             <el-table
                 :data="webList"
                 :default-sort="{prop: 'mTime', order: 'descending'}">
@@ -30,6 +30,10 @@
                 </el-table-column>
                 <el-table-column
                     label="操作">
+                    <template slot-scope="scope">
+                        <el-button circle type="primary" icon="el-icon-edit"></el-button>
+                        <el-button circle type="danger" icon="el-icon-delete" @click="rtest(scope.row._id)"></el-button>
+                    </template>
                 </el-table-column>
             </el-table>
         </el-row>
@@ -40,6 +44,7 @@
 import { post } from '@/js/ajax';
 import WebEditor from '@/js/webEditor';
 import { timeParser } from '@/js/util';
+import { sendError, sendSuccess } from '../js/msgBox';
 
 export default {
     data() {
@@ -52,23 +57,51 @@ export default {
     },
     methods: {
         async getWebList() {
-            const res = await post({
-                url: '/getWebList',
-            });
-            res.data.forEach((elem) => {
-                this.webList.push({
-                    ...elem,
-                    date: timeParser(elem.mTime),
-                })
-            })
+            try {
+                const res = await post({
+                    url: '/getWebList',
+                });
+                res.data.forEach((elem) => {
+                    this.webList.push({
+                        ...elem,
+                        date: timeParser(elem.mTime),
+                    });
+                });
+            } catch (err) {
+                sendError('网络出错');
+            }
         },
         newEditor(index, webInfo) {
-            const editor = new WebEditor(webInfo)
+        // eslint-disable-next-line no-new
+            new WebEditor(webInfo);
+        },
+        rtest(webId) {
+            post({
+                url: '/removeWeb',
+                data: {
+                    webId,
+                },
+            }).then(() => {
+                sendSuccess('删除成功');
+            });
         },
     },
 };
 </script>
 
 <style scoped>
-
+#webTable {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    overflow: auto;
+}
+.buttonList .el-button{
+    margin: 10px 0px 10px 15px;
+}
+.el-table {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #909399;
+    font-size: 13px;
+}
 </style>

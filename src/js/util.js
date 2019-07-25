@@ -1,8 +1,14 @@
+
+/**
+ * 时间戳转为 年-月-日 xx:xx
+ * @param {*} timestamp
+ */
 const timeParser = (timestamp) => {
     const t = new Date(timestamp);
-    return `${t.getFullYear()}-${t.getMonth() + 1}-${t.getDate()}`;
+    return `${t.getFullYear()}年${t.getMonth() + 1}月${t.getDate()}日 ${t.getHours()}:${t.getMinutes() >= 10 ? t.getMinutes() : `0${t.getMinutes()}`}`;
 };
 
 export {
     timeParser,
 };
+
