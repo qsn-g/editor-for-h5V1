@@ -5,10 +5,15 @@ export default class WebEditor {
         const { webName, webId } = data;
         this.webName = webName;
         this.webId = webId;
+        this.webJson = {};
         this.init();
     }
     init() {
-        if (!this.webId) this.newEditor();
+        if (!this.webId) {
+            this.newEditor();
+        } else {
+            this.render();
+        }
     }
     async newEditor() {
         const res = await post({
@@ -19,5 +24,8 @@ export default class WebEditor {
         });
         // eslint-disable-next-line no-underscore-dangle
         this.webId = res.data._id;
+    }
+    render() {
+
     }
 }

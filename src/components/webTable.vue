@@ -25,7 +25,7 @@
                     label="网页名称"
                     sortable>
                     <template slot-scope="scope">
-                        <label contenteditable="true">{{scope.row.webName}}</label>
+                        <label :contenteditable="uName" @dblclick="() => {uName = true}" @blur="updateName($event, scope.row)">{{scope.row.webName}}</label>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -50,6 +50,7 @@ export default {
     data() {
         return {
             webList: [],
+            uName: false,
         };
     },
     beforeMount() {
@@ -74,6 +75,19 @@ export default {
         newEditor(index, webInfo) {
         // eslint-disable-next-line no-new
             new WebEditor(webInfo);
+        },
+        updateName(e, webInfo) {
+            const after = e.target.innerText;
+            const before = webInfo.webName;
+            if (after === before) return;
+            post({
+                url: '/updateName',
+                data: {
+                    // eslint-disable-next-line no-underscore-dangle
+                    webId: webInfo._id,
+                    webName: after,
+                },
+            });
         },
         rtest(webId) {
             post({
