@@ -12,7 +12,7 @@ export default class WebEditor {
         if (!this.webId) {
             this.newEditor();
         } else {
-            this.render();
+            // this.render();
         }
     }
     async newEditor() {
@@ -25,7 +25,12 @@ export default class WebEditor {
         // eslint-disable-next-line no-underscore-dangle
         this.webId = res.data._id;
     }
-    render() {
-
+    async render() {
+        const res = await post({
+            url: '/getWebJson',
+            data: {
+                webId: this.webId,
+            },
+        });
     }
 }

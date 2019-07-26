@@ -8,7 +8,12 @@ const timeParser = (timestamp) => {
     return `${t.getFullYear()}年${t.getMonth() + 1}月${t.getDate()}日 ${t.getHours()}:${t.getMinutes() >= 10 ? t.getMinutes() : `0${t.getMinutes()}`}`;
 };
 
+const newComponent = (prop) => {
+    
+};
+
 export {
     timeParser,
+    newComponent,
 };
 

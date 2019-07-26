@@ -1,0 +1,7 @@
+{
+    "jbutton": {
+        "size": "medium",
+        "type": "text",
+        "circle": true
+    }
+}

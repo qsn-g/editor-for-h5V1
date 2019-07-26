@@ -5,14 +5,14 @@
                 type="primary"
                 icon="el-icon-plus"
                 size="medium"
-                @click="newEditor(-1, { webName: '新建编辑' })"
+                @click="newEditor({ webName: '新建编辑' })"
                 circle>
             </el-button>
         </el-row>
         <el-row class="table">
             <el-table
                 :data="webList"
-                :default-sort="{prop: 'mTime', order: 'descending'}">
+                :default-sort="{prop: 'date', order: 'descending'}">
                 <el-table-column
                     type="index">
                 </el-table-column>
@@ -31,7 +31,7 @@
                 <el-table-column
                     label="操作">
                     <template slot-scope="scope">
-                        <el-button circle type="primary" icon="el-icon-edit"></el-button>
+                        <el-button circle type="primary" icon="el-icon-edit" @click="newEditor(scope.row)"></el-button>
                         <el-button circle type="danger" icon="el-icon-delete" @click="rtest(scope.row._id)"></el-button>
                     </template>
                 </el-table-column>
@@ -42,7 +42,6 @@
 
 <script>
 import { post } from '@/js/ajax';
-import WebEditor from '@/js/webEditor';
 import { timeParser } from '@/js/util';
 import { sendError, sendSuccess } from '../js/msgBox';
 
@@ -72,22 +71,31 @@ export default {
                 sendError('网络出错');
             }
         },
-        newEditor(index, webInfo) {
-        // eslint-disable-next-line no-new
-            new WebEditor(webInfo);
-        },
-        updateName(e, webInfo) {
-            const after = e.target.innerText;
-            const before = webInfo.webName;
-            if (after === before) return;
-            post({
-                url: '/updateName',
-                data: {
-                    // eslint-disable-next-line no-underscore-dangle
-                    webId: webInfo._id,
-                    webName: after,
-                },
+        newEditor(webInfo) {
+            this.$router.push({
+                name: 'webEditor',
+                params: webInfo,
             });
+        },
+        async updateName(e, webInfo) {
+            this.uName = false;
+            try {
+                const after = e.target.innerText;
+                const before = webInfo.webName;
+                if (after === before) return;
+                webInfo.webName = after
+                const res = await post({
+                    url: '/updateName',
+                    data: {
+                        // eslint-disable-next-line no-underscore-dangle
+                        webId: webInfo._id,
+                        webName: webInfo.webName,
+                    },
+                });
+                sendSuccess(res.data);
+            } catch (err) {
+                sendError(err);
+            }
         },
         rtest(webId) {
             post({
