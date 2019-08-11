@@ -83,7 +83,8 @@ export default {
                 const after = e.target.innerText;
                 const before = webInfo.webName;
                 if (after === before) return;
-                webInfo.webName = after
+                // eslint-disable-next-line no-param-reassign
+                webInfo.webName = after;
                 const res = await post({
                     url: '/updateName',
                     data: {

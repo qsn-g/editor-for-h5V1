@@ -1,10 +1,12 @@
 import { post } from './ajax';
+import store from './vuex';
 
 export default class WebEditor {
     constructor(data) {
-        const { webName, webId } = data;
+        const { webName, webId, components } = data;
         this.webName = webName;
         this.webId = webId;
+        this.components = components;
         this.webJson = {};
         this.init();
     }
@@ -14,6 +16,10 @@ export default class WebEditor {
         } else {
             // this.render();
         }
+        document.oncontextmenu = (e) => {
+            e.preventDefault();
+            store.commit('resetFocus');
+        };
     }
     async newEditor() {
         const res = await post({
@@ -32,5 +38,6 @@ export default class WebEditor {
                 webId: this.webId,
             },
         });
+        return res;
     }
 }
