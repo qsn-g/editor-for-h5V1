@@ -1,8 +1,8 @@
 import Jcomponents from './Jcomponents';
 
 export default class Jbutton extends Jcomponents {
-    constructor(className) {
-        super(className);
+    constructor(webEditor) {
+        super(webEditor);
         this.initDom();
     }
     initDom() {

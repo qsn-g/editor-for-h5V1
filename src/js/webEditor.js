@@ -3,15 +3,17 @@ import store from './vuex';
 
 export default class WebEditor {
     constructor(data) {
-        const { webName, webId, components } = data;
-        this.webName = webName;
-        this.webId = webId;
-        this.components = components;
-        this.webJson = {};
+        const { webName, webId } = data;
+        this.allComponents = [];
+        this.webJson = {
+            webId,
+            webName,
+            childNodes: [],
+        };
         this.init();
     }
     init() {
-        if (!this.webId) {
+        if (!this.webJson.webId) {
             this.newEditor();
         } else {
             // this.render();
@@ -25,17 +27,17 @@ export default class WebEditor {
         const res = await post({
             url: '/newEditor',
             data: {
-                webName: this.webName,
+                webName: this.webJson.webName,
             },
         });
         // eslint-disable-next-line no-underscore-dangle
-        this.webId = res.data._id;
+        this.webJson.webId = res.data._id;
     }
     async render() {
         const res = await post({
             url: '/getWebJson',
             data: {
-                webId: this.webId,
+                webId: this.webJson.webId,
             },
         });
         return res;

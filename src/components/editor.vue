@@ -6,7 +6,11 @@
                 v-for="elem in componentType"
                 :key="elem.e">
                     {{elem}}
-                </el-button>
+            </el-button>
+            <el-button
+                @click="test2">
+                test
+            </el-button>
         </el-row>
         <el-row id="workSpace" @click="test">
         </el-row>
@@ -24,7 +28,7 @@ export default {
             webEditor: null,
             webJson: {},
             componentItem: [],
-            componentType: ['button', 'upload', 'link'],
+            componentType: ['button' , 'upload', 'link'],
         };
     },
     beforeMount() {
@@ -35,7 +39,7 @@ export default {
             });
             return;
         }
-        this.webEditor = new WebEditor({ webName, webId: _id, components: this.componentItem });
+        this.webEditor = new WebEditor({ webName, webId: _id });
     },
     methods: {
         ...mapActions([
@@ -43,7 +47,11 @@ export default {
         ]),
         test() {
             /* eslint-disable no-new */
-            new Jbutton();
+            new Jbutton(this.webEditor);
+        },
+        test2(e) {
+            const t = document.getElementById(this.$store.state.focusElem)
+            t.setAttribute('style', 'display: flex; flex: 1;')
         },
     },
 };
