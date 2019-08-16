@@ -1,12 +1,11 @@
-import { Button } from 'element-ui';
 import Jcomponents from './Jcomponents';
 
-export default class Jbutton extends Jcomponents {
+export default class Jmenu extends Jcomponents {
     constructor(webEditor) {
         super(webEditor);
         this.initDom();
     }
     initDom() {
-        this.dom.className = 'el-button';
+        this.dom.className = 'j-menu';
     }
 }

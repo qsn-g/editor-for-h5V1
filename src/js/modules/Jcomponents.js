@@ -33,7 +33,6 @@ export default class Jcomponents {
         }
     }
     bindListener() {
-        this.dom.onmousedown = this.drag;
         this.dom.onfocus = () => {
             store.commit('setFocus', this.id);
         };

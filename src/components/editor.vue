@@ -1,17 +1,16 @@
 <template>
     <div class="editor">
-        <el-row>
-            <el-button
-                @click="test"
-                v-for="elem in componentType"
-                :key="elem.e">
-                    {{elem}}
-            </el-button>
-            <el-button
-                @click="test2">
-                test
-            </el-button>
-        </el-row>
+        <el-drawer
+            title="工具栏"
+            size="18%"
+            :append-to-body='true'
+            :visible.sync="drawer"
+            direction="rtl">
+            <div class="content">
+                <h4>当前焦点: {{$store.state.focusElem ? '已聚焦' : '无'}}</h4>
+                <el-button @click="test">按钮</el-button>
+            </div>
+        </el-drawer>
         <el-row id="workSpace" @click="test">
         </el-row>
     </div>
@@ -26,9 +25,7 @@ export default {
     data() {
         return {
             webEditor: null,
-            webJson: {},
-            componentItem: [],
-            componentType: ['button' , 'upload', 'link'],
+            drawer: false,
         };
     },
     beforeMount() {
@@ -40,6 +37,14 @@ export default {
             return;
         }
         this.webEditor = new WebEditor({ webName, webId: _id });
+        document.onmousemove = (e) => {
+            if (e.clientX + 20 >= window.innerWidth) {
+                this.drawer = true;
+            }
+        };
+    },
+    beforeDestroy() {
+        document.onmousemove = null;
     },
     methods: {
         ...mapActions([
@@ -49,9 +54,9 @@ export default {
             /* eslint-disable no-new */
             new Jbutton(this.webEditor);
         },
-        test2(e) {
-            const t = document.getElementById(this.$store.state.focusElem)
-            t.setAttribute('style', 'display: flex; flex: 1;')
+        test2() {
+            const t = document.getElementById(this.$store.state.focusElem);
+            t.setAttribute('style', 'display: flex; flex: 1;');
         },
     },
 };
@@ -62,21 +67,12 @@ export default {
     display: flex;
     flex-direction: column;
 }
+.content {
+    margin: 0 15px 0 15px;
+    display: flex;
+    flex-direction: column;
+}
 #workSpace {
     flex: 1;
-}
-.el-carousel__item h3 {
-color: #475669;
-font-size: 14px;
-opacity: 0.75;
-margin: 0;
-}
-
-.el-carousel__item:nth-child(2n) {
-background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n+1) {
-background-color: #d3dce6;
 }
 </style>
