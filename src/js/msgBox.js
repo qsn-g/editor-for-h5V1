@@ -3,7 +3,6 @@ import { Message } from 'element-ui';
 const duration = 1500;
 const showClose = true;
 
-
 const sendWarm = (message) => {
     Message({
         message,
@@ -22,7 +21,6 @@ const sendError = (message) => {
     });
 };
 
-
 const sendSuccess = (message) => {
     Message({
         message,
@@ -32,8 +30,4 @@ const sendSuccess = (message) => {
     });
 };
 
-export {
-    sendWarm,
-    sendError,
-    sendSuccess,
-};
+export { sendWarm, sendError, sendSuccess };

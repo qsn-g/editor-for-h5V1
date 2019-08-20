@@ -17,7 +17,4 @@ const randomId = (arr) => {
     return res;
 };
 
-export {
-    timeParser,
-    randomId,
-};
+export { timeParser, randomId };
