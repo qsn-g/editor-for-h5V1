@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
-    <menuBar />
-    <router-view class="rightBar"></router-view>
-  </div>
+    <div id="app">
+        <menuBar />
+        <router-view class="rightBar"></router-view>
+    </div>
 </template>
 
 <script>
@@ -22,10 +22,10 @@ export default {
 
 <style scoped>
 #app {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 .rightBar {
-  flex: 1;
+    flex: 1;
 }
 </style>

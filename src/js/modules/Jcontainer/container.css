@@ -1,0 +1,10 @@
+.j-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    outline: none;
+}
+
+.j-container:focus {
+    background: #ecf5ff;
+}

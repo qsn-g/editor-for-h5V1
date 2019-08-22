@@ -7,7 +7,4 @@ const post = (params) => {
 
 const get = url => axios.get(url);
 
-export {
-    post,
-    get,
-};
+export { post, get };
