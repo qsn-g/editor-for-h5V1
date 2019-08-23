@@ -27,7 +27,10 @@
                     </span>
                 </el-row>
                 <el-row>
-                    <el-button @click="test">按钮</el-button>
+                    <el-button
+                        v-for="component in allComponents"
+                        :key="component._name"
+                    >{{component.name}}</el-button>
                 </el-row>
             </div>
         </el-drawer>
@@ -38,15 +41,14 @@
 <script>
 import { mapActions } from 'vuex';
 import WebEditor from '@/js/webEditor';
-import Jbutton from '../js/modules/Jbutton';
-import Jcontainer from '../js/modules/Jcontainer';
-import Jtable from '../js/modules/Jtable';
+import allComponents from '@/js/config/cConfig';
 
 export default {
     data() {
         return {
             webEditor: null,
             drawer: false,
+            allComponents,
         };
     },
     beforeMount() {
@@ -66,9 +68,10 @@ export default {
     },
     beforeDestroy() {
         document.onmousemove = null;
+        this.resetFocus();
     },
     methods: {
-        ...mapActions(['setNextStruct']),
+        ...mapActions(['resetFocus']),
         test() {
             /* eslint-disable no-new */
             const testData = [
@@ -88,10 +91,6 @@ export default {
                     姓名: '33',
                 },
             ];
-            new Jtable(this.webEditor, {
-                header: ['年龄', '日期', '姓名'],
-                tableData: testData,
-            });
         },
         layout(index) {
             const id = this.$store.state.focusElem;
