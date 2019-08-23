@@ -73,23 +73,23 @@ export default {
             /* eslint-disable no-new */
             const testData = [
                 {
-                    a: '11',
-                    b: '12',
-                    c: '13',
+                    日期: '11',
+                    年龄: '12',
+                    姓名: '13',
                 },
                 {
-                    a: '21',
-                    b: '22',
-                    c: '23',
+                    日期: '21',
+                    年龄: '22',
+                    姓名: '23',
                 },
                 {
-                    a: '31',
-                    b: '32',
-                    c: '33',
+                    日期: '31',
+                    年龄: '32',
+                    姓名: '33',
                 },
             ];
             new Jtable(this.webEditor, {
-                header: ['a', 'b', 'c'],
+                header: ['年龄', '日期', '姓名'],
                 tableData: testData,
             });
         },

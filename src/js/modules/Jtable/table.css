@@ -1,4 +1,45 @@
 .j-table {
     display: flex;
     flex: 1;
+    font-size: 15px;
+    color: #606266;
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+    font-weight: 400;
+}
+
+.j-table table {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.j-table table thead {
+    font-weight: 500;
+    color: #909399;
+}
+
+.j-table table thead,
+.j-table table tbody {
+    display: flex;
+    flex-direction: column;
+}
+
+.j-table table tr {
+    display: flex;
+    flex: 1;
+}
+
+.j-table table tr th,
+.j-table table tr td {
+    text-align: left;
+    flex: 1;
+    word-wrap: break-word;
+    word-break: break-all;
+    padding: 14px 11px 14px 11px;
+    border-bottom: 1px solid #ebeef5;
+}
+
+.j-table table tr:hover,
+.j-table table tr:focus {
+    background: #f5f7fa;
 }

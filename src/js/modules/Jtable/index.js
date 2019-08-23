@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import Jcomponents from '../Jcomponents';
 import './table.css';
 
@@ -15,15 +16,31 @@ export default class Jtable extends Jcomponents {
         className += ` ${this.prop.type}`;
         this.dom.className = className;
         this.initData();
+        return this;
     }
-    initData(tableData) {
-        const theader = '';
-        const tbody = '';
+    initData(tableData, header) {
+        let theader = '';
+        let tbody = '';
         tableData = tableData || this.prop.tableData;
-        this.prop.tableData.forEach((elem) => {
-            const rowDom = '';
+        header = header || this.prop.header;
+        header.forEach((headerElem) => {
+            theader += `<th>${headerElem}</th>`;
         });
+        theader = `<thead><tr>${theader}</tr></thead>`;
+        const setRowDom = (elem) => {
+            let rowDom = '';
+            header.forEach((headerElem) => {
+                rowDom += `<td>${elem[headerElem]}</td>`;
+            });
+            return `<tr class ='tableItem'>${rowDom}</tr>`;
+        };
+        tableData.forEach((elem) => {
+            tbody += setRowDom(elem);
+        });
+        tbody = `<tbody>${tbody}</tbody>`;
+        let resultDom = theader + tbody;
         resultDom = `<table>${resultDom}</table>`;
         this.dom.innerHTML = resultDom;
+        return this;
     }
 }
