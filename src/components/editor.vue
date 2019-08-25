@@ -1,3 +1,4 @@
+
 <template>
     <div class="editor">
         <el-drawer
@@ -15,13 +16,13 @@
                         <el-button
                             @click="layout(1)"
                             circle
-                            icon="el-icon-caret-right"
+                            icon="el-icon-caret-bottom"
                             size="mini"
                         />
                         <el-button
                             @click="layout(2)"
                             circle
-                            icon="el-icon-caret-bottom"
+                            icon="el-icon-caret-right"
                             size="mini"
                         />
                     </span>
@@ -30,18 +31,32 @@
                     <el-button
                         v-for="component in allComponents"
                         :key="component._name"
+                        @click="new component.fun(webEditor)"
                     >{{component.name}}</el-button>
                 </el-row>
             </div>
         </el-drawer>
-        <el-row id="workSpace" @click="test"></el-row>
+        <el-dialog title="组件属性" :visible.sync="dialogFormVisible">
+            <el-form :model="form">
+                <el-form-item label="组件类型">
+                    <el-select v-model="form.prop.type" placeholder="请选择组件类型">
+                        <el-option v-for="type in form.type" :key="type.id" :value="type"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item></el-form-item>
+            </el-form>
+        </el-dialog>
+        <el-row id="workSpace"></el-row>
     </div>
 </template>
 
 <script>
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-underscore-dangle */
 import { mapActions } from 'vuex';
 import WebEditor from '@/js/webEditor';
 import allComponents from '@/js/config/cConfig';
+import eventBus from '@/js/eventBus';
 
 export default {
     data() {
@@ -49,6 +64,11 @@ export default {
             webEditor: null,
             drawer: false,
             allComponents,
+            dialogFormVisible: false,
+            form: {
+                type: [],
+                prop: {},
+            },
         };
     },
     beforeMount() {
@@ -65,33 +85,16 @@ export default {
                 this.drawer = true;
             }
         };
+        this.initEventBus();
     },
     beforeDestroy() {
         document.onmousemove = null;
         this.resetFocus();
+        this.clearId();
+        this.removeEventBus();
     },
     methods: {
-        ...mapActions(['resetFocus']),
-        test() {
-            /* eslint-disable no-new */
-            const testData = [
-                {
-                    日期: '11',
-                    年龄: '12',
-                    姓名: '13',
-                },
-                {
-                    日期: '21',
-                    年龄: '22',
-                    姓名: '23',
-                },
-                {
-                    日期: '31',
-                    年龄: '32',
-                    姓名: '33',
-                },
-            ];
-        },
+        ...mapActions(['resetFocus', 'clearId']),
         layout(index) {
             const id = this.$store.state.focusElem;
             const elem =
@@ -103,6 +106,19 @@ export default {
             } else if (index === 2) {
                 elem.style.flexDirection = 'row';
             }
+        },
+        initEventBus() {
+            eventBus.$on('openDialog', this.openDialog);
+        },
+        removeEventBus() {
+            eventBus.$off('openDialog', this.openDialog);
+        },
+        openDialog(component) {
+            this.dialogFormVisible = true;
+            this.form.type = allComponents.find(
+                c => c._name === component.class,
+            ).type;
+            this.form.prop = component.prop;
         },
     },
 };

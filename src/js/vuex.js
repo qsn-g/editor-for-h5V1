@@ -13,6 +13,9 @@ export default new Vuex.Store({
         insertComponent(state, info) {
             state.componentList.push(info);
         },
+        resetComponents(state) {
+            state.componentList = [];
+        },
         setFocus(state, type) {
             state.focusElem = type;
         },
@@ -22,8 +25,14 @@ export default new Vuex.Store({
         insertId(state, id) {
             state.idArr.push(id);
         },
+        clearId(state) {
+            state.idArr = [];
+        },
     },
     actions: {
+        resetComponents({ commit }) {
+            commit('resetComponents');
+        },
         insertComponent({ commit }, info) {
             commit('insertComponent', info);
         },
@@ -35,6 +44,9 @@ export default new Vuex.Store({
         },
         insertId({ commit }, type) {
             commit('insertId', type);
+        },
+        clearId({ commit }) {
+            commit('clearId');
         },
     },
 });

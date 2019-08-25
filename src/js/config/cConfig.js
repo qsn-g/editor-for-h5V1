@@ -12,11 +12,13 @@ const allComponents = [
         _name: 'Jbutton',
         name: '按钮',
         fun: Jbutton,
+        type: ['primary', 'danger'],
     },
     {
         _name: 'Jtable',
         name: '表格',
         fun: Jtable,
+        type: [],
     },
 ];
 

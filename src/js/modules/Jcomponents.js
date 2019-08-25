@@ -1,6 +1,7 @@
 import { sendError } from '../msgBox';
 import store from '../vuex';
 import { randomId } from '../util';
+import eventBus from '../eventBus';
 
 export default class Jcomponents {
     constructor(webEditor) {
@@ -17,7 +18,7 @@ export default class Jcomponents {
     appendDom() {
         try {
             const idArr = store.state.idArr;
-            this.webEditor.allComponents.push(this);
+            store.commit('insertComponent', this);
             this.id = randomId(idArr);
             this.dom.id = this.id;
             this.dom.tabIndex = -1;
@@ -28,7 +29,7 @@ export default class Jcomponents {
                 this.webEditor.webJson.childNodes.push(this);
             } else {
                 const fatherDom = document.getElementById(focusElem);
-                const allComponents = this.webEditor.allComponents;
+                const allComponents = store.state.componentList;
                 this.fatherNode = allComponents.find(elem => elem.id === focusElem);
                 this.fatherNode.childNodes.push(this);
                 fatherDom.appendChild(this.dom);
@@ -40,6 +41,9 @@ export default class Jcomponents {
     bindListener() {
         this.dom.onfocus = () => {
             store.commit('setFocus', this.id);
+        };
+        this.dom.ondblclick = () => {
+            eventBus.$emit('openDialog', this);
         };
     }
 }

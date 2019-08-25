@@ -3,12 +3,13 @@ import Jcomponents from '../Jcomponents';
 import './table.css';
 
 export default class Jtable extends Jcomponents {
-    constructor(webEditor, prop) {
+    constructor(webEditor, prop = {}) {
         super(webEditor);
         prop.type = prop.type || '';
         prop.header = prop.header || [];
         prop.tableData = prop.tableData || [];
         this.prop = prop;
+        this.class = 'Jtable';
         this.initDom();
     }
     initDom() {
@@ -41,6 +42,13 @@ export default class Jtable extends Jcomponents {
         let resultDom = theader + tbody;
         resultDom = `<table>${resultDom}</table>`;
         this.dom.innerHTML = resultDom;
+        return this;
+    }
+    setProp(prop) {
+        prop.header = prop.header || this.prop.header;
+        prop.tableData = prop.tableData || this.prop.tableData;
+        this.prop = prop;
+        this.initData(this.prop.tableData, this.prop.header);
         return this;
     }
 }
