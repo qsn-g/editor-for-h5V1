@@ -81,11 +81,11 @@ export default {
     beforeDestroy() {
         document.onmousemove = null;
         this.resetFocus();
-        this.clearId();
+        this.resetComponents();
         this.removeEventBus();
     },
     methods: {
-        ...mapActions(['resetFocus', 'clearId']),
+        ...mapActions(['resetFocus', 'resetComponents']),
         layout(index) {
             const id = this.$store.state.focusElem;
             const elem =

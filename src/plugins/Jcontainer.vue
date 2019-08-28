@@ -1,26 +1,41 @@
 <template>
-    <div class="j-container">
-        123
-        <AnyType v-for="node in childNodes" :key="node.id" :nodeProps="node" :plugins="plugins"></AnyType>
+    <div class="j-container" @click="focus">
+        <template slot="input">
+            <AnyType v-for="node in childNodes" :key="node.id" :nodeProps="node" :plugins="plugins"></AnyType>
+        </template>
     </div>
 </template>
 
 <script>
 import FormatMixin from '@/mixins/format';
 import AnyType from '@/components/anyType';
-import test from '../js/test/cConfig';
 
 export default {
     name: 'Jcontainer',
-    mixin: [FormatMixin],
+    mixins: [FormatMixin],
     props: ['plugins'],
     components: { AnyType },
     data() {
         return {
-            childNodes: test,
+            name: 'Jcontainer',
+            childNodes: [
+                {
+                    name: 'Jimage',
+                },
+                {
+                    name: 'Jimage',
+                },
+                {
+                    name: 'Jimage',
+                },
+            ],
         };
     },
-    beforeMount() {},
+    methods: {
+        focus(e) {
+            console.log(e);
+        },
+    },
 };
 </script>
 

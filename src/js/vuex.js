@@ -8,6 +8,7 @@ export default new Vuex.Store({
         componentList: [],
         focusElem: null,
         idArr: [],
+        webJson: {},
     },
     mutations: {
         insertComponent(state, info) {
@@ -22,11 +23,8 @@ export default new Vuex.Store({
         resetFocus(state) {
             state.focusElem = null;
         },
-        insertId(state, id) {
-            state.idArr.push(id);
-        },
-        clearId(state) {
-            state.idArr = [];
+        funToWJ(state, cb) {
+            cb(state.webJson);
         },
     },
     actions: {
@@ -42,11 +40,8 @@ export default new Vuex.Store({
         resetFocus({ commit }) {
             commit('resetFocus');
         },
-        insertId({ commit }, type) {
-            commit('insertId', type);
-        },
-        clearId({ commit }) {
-            commit('clearId');
+        funToWJ({ commit }, cb) {
+            commit('funToWJ', cb);
         },
     },
 });

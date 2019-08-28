@@ -1,5 +1,7 @@
 <template>
-    <div>image</div>
+    <Jdiv class="j-image">
+        <template slot="input">123</template>
+    </Jdiv>
 </template>
 
 <script>
@@ -9,7 +11,9 @@ export default {
     name: 'Jimage',
     mixins: [FormatMixin],
     data() {
-        return {};
+        return {
+            name: 'Jimage',
+        };
     },
 };
 </script>

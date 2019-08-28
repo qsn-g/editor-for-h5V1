@@ -1,5 +1,18 @@
+import { mapActions } from 'vuex';
+import { randomId } from '../js/util';
+
 export default {
+    data() {
+        return {
+            id: '',
+        };
+    },
     beforeMount() {
-        console.log(this);
+        this.id = randomId();
+        this.insertComponent(this);
+        // console.log(this.$store);
+    },
+    methods: {
+        ...mapActions(['insertComponent']),
     },
 };
