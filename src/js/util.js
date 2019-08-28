@@ -17,4 +17,14 @@ const randomId = (arr) => {
     return res;
 };
 
-export { timeParser, randomId };
+const getPluginsFromContext = (context) => {
+    const res = {};
+    context
+        .keys()
+        .map(context)
+        .forEach((a) => {
+            res[a.default.name] = a.default;
+        });
+    return res;
+};
+export { timeParser, randomId, getPluginsFromContext };

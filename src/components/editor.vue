@@ -28,25 +28,13 @@
                     </span>
                 </el-row>
                 <el-row>
-                    <el-button
-                        v-for="component in allComponents"
-                        :key="component._name"
-                        @click="new component.fun(webEditor)"
-                    >{{component.name}}</el-button>
+                    <el-button v-for="plugin in plugins" :key="plugin.id ">{{ plugin.name }}</el-button>
                 </el-row>
             </div>
         </el-drawer>
-        <el-dialog title="组件属性" :visible.sync="dialogFormVisible">
-            <el-form :model="form">
-                <el-form-item label="组件类型">
-                    <el-select v-model="form.prop.type" placeholder="请选择组件类型">
-                        <el-option v-for="type in form.type" :key="type.id" :value="type"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item></el-form-item>
-            </el-form>
-        </el-dialog>
-        <el-row id="workSpace"></el-row>
+        <el-row id="workSpace">
+            <Container :plugins="plugins"></Container>
+        </el-row>
     </div>
 </template>
 
@@ -54,23 +42,27 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-underscore-dangle */
 import { mapActions } from 'vuex';
-import WebEditor from '@/js/webEditor';
-import allComponents from '@/js/config/cConfig';
+import Vue from 'vue';
 import eventBus from '@/js/eventBus';
+import Container from '@/plugins/Jcontainer';
+import { getPluginsFromContext } from '../js/util';
+
+const localRq = require.context('../plugins', true, /\.vue$/);
+const plugins = getPluginsFromContext(localRq);
+Object.keys(plugins).forEach((item) => {
+    Vue.component(item, plugins[item]);
+});
 
 export default {
+    name: 'editor',
     data() {
         return {
-            webEditor: null,
             drawer: false,
-            allComponents,
             dialogFormVisible: false,
-            form: {
-                type: [],
-                prop: {},
-            },
+            plugins,
         };
     },
+    components: { Container },
     beforeMount() {
         const { _id, webName } = this.$route.params;
         if (!_id && !webName) {
@@ -79,7 +71,6 @@ export default {
             });
             return;
         }
-        this.webEditor = new WebEditor({ webName, webId: _id });
         document.onmousemove = (e) => {
             if (e.clientX + 20 >= window.innerWidth) {
                 this.drawer = true;
@@ -112,13 +103,6 @@ export default {
         },
         removeEventBus() {
             eventBus.$off('openDialog', this.openDialog);
-        },
-        openDialog(component) {
-            this.dialogFormVisible = true;
-            this.form.type = allComponents.find(
-                c => c._name === component.class,
-            ).type;
-            this.form.prop = component.prop;
         },
     },
 };
