@@ -48,6 +48,7 @@
 import { mapActions } from 'vuex';
 import Vue from 'vue';
 import eventBus from '@/js/eventBus';
+import { sendError } from '@/js/msgBox';
 import Container from '@/plugins/Jcontainer';
 import { getPluginsFromContext } from '../js/util';
 
@@ -118,7 +119,10 @@ export default {
                 name: e.target.innerText,
             };
             const focusElem = this.$store.state.focusElem;
-            if (!focusElem.id || !focusElem.childNodes) return;
+            if (!focusElem.id || !focusElem.childNodes) {
+                sendError('该组件无法添加子组件');
+                return;
+            }
             focusElem.childNodes.push(componentObj);
         },
     },
