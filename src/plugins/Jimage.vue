@@ -1,5 +1,5 @@
 <template>
-    <Jdiv class="j-image">
+    <Jdiv :id="id" class="j-image">
         <template slot="input">123</template>
     </Jdiv>
 </template>

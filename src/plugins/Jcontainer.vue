@@ -1,9 +1,9 @@
 <template>
-    <div class="j-container" @click="focus">
+    <Jdiv :id="id" class="j-container" :class="{'is-focus': isFocus}">
         <template slot="input">
             <AnyType v-for="node in childNodes" :key="node.id" :nodeProps="node" :plugins="plugins"></AnyType>
         </template>
-    </div>
+    </Jdiv>
 </template>
 
 <script>
@@ -18,26 +18,20 @@ export default {
     data() {
         return {
             name: 'Jcontainer',
-            childNodes: [
-                {
-                    name: 'Jimage',
-                },
-                {
-                    name: 'Jimage',
-                },
-                {
-                    name: 'Jimage',
-                },
-            ],
+            isFocus: false,
+            childNodes: [],
         };
     },
-    methods: {
-        focus(e) {
-            console.log(e);
-        },
+    beforeMount() {
+        this.struct.childNodes =
+            this.cJson && this.cJson.childNodes ? this.cJson.childNodes : [];
     },
+    methods: {},
 };
 </script>
 
 <style scoped>
+.is-focus {
+    background: #ecf5ff;
+}
 </style>

@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <component :is="type"></component>
-    </div>
+    <component :is="type"></component>
 </template>
 
 <script>
@@ -14,7 +12,6 @@ export default {
     },
     beforeMount() {
         this.type = this.nodeProps.name;
-        console.log(this.type);
     },
 };
 </script>

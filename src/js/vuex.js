@@ -6,42 +6,41 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         componentList: [],
-        focusElem: null,
-        idArr: [],
+        focusElem: {},
         webJson: {},
     },
     mutations: {
+        resetWebJson(state) {
+            state.webJson = {};
+        },
         insertComponent(state, info) {
             state.componentList.push(info);
         },
         resetComponents(state) {
             state.componentList = [];
         },
-        setFocus(state, type) {
-            state.focusElem = type;
+        setFocus(state, elem) {
+            state.focusElem = elem;
         },
         resetFocus(state) {
-            state.focusElem = null;
-        },
-        funToWJ(state, cb) {
-            cb(state.webJson);
+            state.focusElem = {};
         },
     },
     actions: {
+        resetWebJson({ commit }) {
+            commit('resetWebJson');
+        },
         resetComponents({ commit }) {
             commit('resetComponents');
         },
         insertComponent({ commit }, info) {
             commit('insertComponent', info);
         },
-        setFocus({ commit }, type) {
-            commit('setElement', type);
+        setFocus({ commit }, elem) {
+            commit('setFocus', elem);
         },
         resetFocus({ commit }) {
             commit('resetFocus');
-        },
-        funToWJ({ commit }, cb) {
-            commit('funToWJ', cb);
         },
     },
 });

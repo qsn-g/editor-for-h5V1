@@ -9,7 +9,7 @@
             direction="rtl"
         >
             <div class="content">
-                <h4>当前焦点: {{$store.state.focusElem ? '已聚焦' : '无'}}</h4>
+                <h4>当前焦点: {{$store.state.focusElem.id ? '已聚焦' : '无'}}</h4>
                 <el-row style="display:flex;justify-content:space-between">
                     <span>选择布局:</span>
                     <span>
@@ -28,12 +28,16 @@
                     </span>
                 </el-row>
                 <el-row>
-                    <el-button v-for="plugin in plugins" :key="plugin.id ">{{ plugin.name }}</el-button>
+                    <el-button
+                        v-for="plugin in plugins"
+                        :key="plugin.id "
+                        @click="addPlugin"
+                    >{{ plugin.name }}</el-button>
                 </el-row>
             </div>
         </el-drawer>
         <el-row id="workSpace">
-            <Container :plugins="plugins"></Container>
+            <Container :cJson="test" :plugins="plugins"></Container>
         </el-row>
     </div>
 </template>
@@ -52,7 +56,7 @@ const plugins = getPluginsFromContext(localRq);
 Object.keys(plugins).forEach((item) => {
     Vue.component(item, plugins[item]);
 });
-
+const test2 = {};
 export default {
     name: 'editor',
     data() {
@@ -60,6 +64,7 @@ export default {
             drawer: false,
             dialogFormVisible: false,
             plugins,
+            test: test2,
         };
     },
     components: { Container },
@@ -76,22 +81,26 @@ export default {
                 this.drawer = true;
             }
         };
+        document.oncontextmenu = (e) => {
+            this.resetFocus();
+            e.preventDefault();
+        };
         this.initEventBus();
     },
     beforeDestroy() {
         document.onmousemove = null;
         this.resetFocus();
+        this.resetWebJson();
         this.resetComponents();
         this.removeEventBus();
     },
     methods: {
-        ...mapActions(['resetFocus', 'resetComponents']),
+        ...mapActions(['resetFocus', 'resetComponents', 'resetWebJson']),
         layout(index) {
-            const id = this.$store.state.focusElem;
-            const elem =
-                id === null
-                    ? document.getElementById('workSpace')
-                    : document.getElementById(id);
+            const id = this.$store.state.focusElem.id;
+            const elem = id
+                ? document.getElementById(id)
+                : document.getElementById('workSpace');
             if (index === 1) {
                 elem.style.flexDirection = 'column';
             } else if (index === 2) {
@@ -103,6 +112,14 @@ export default {
         },
         removeEventBus() {
             eventBus.$off('openDialog', this.openDialog);
+        },
+        addPlugin(e) {
+            const componentObj = {
+                name: e.target.innerText,
+            };
+            const focusElem = this.$store.state.focusElem;
+            if (!focusElem.id || !focusElem.childNodes) return;
+            focusElem.childNodes.push(componentObj);
         },
     },
 };
