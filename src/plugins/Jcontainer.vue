@@ -1,7 +1,7 @@
 <template>
     <Jdiv :id="id" class="j-container" :class="{'is-focus': isFocus}">
         <template slot="input">
-            <AnyType v-for="node in childNodes" :key="node.id" :nodeProps="node" :plugins="plugins"></AnyType>
+            <AnyType v-for="node in childNodes" :key="node.id" :cJson="node"></AnyType>
         </template>
     </Jdiv>
 </template>
@@ -13,7 +13,6 @@ import AnyType from '@/components/anyType';
 export default {
     name: 'Jcontainer',
     mixins: [FormatMixin],
-    props: ['plugins'],
     components: { AnyType },
     data() {
         return {
@@ -22,10 +21,7 @@ export default {
             childNodes: [],
         };
     },
-    beforeMount() {
-        this.struct.childNodes =
-            this.cJson && this.cJson.childNodes ? this.cJson.childNodes : [];
-    },
+    beforeMount() {},
     methods: {},
 };
 </script>

@@ -1,17 +1,17 @@
 <template>
-    <component :is="type"></component>
+    <component :is="type" :cJson="cJson"></component>
 </template>
 
 <script>
 export default {
-    props: ['nodeProps', 'plugins'],
+    props: ['cJson'],
     data() {
         return {
             type: '',
         };
     },
     beforeMount() {
-        this.type = this.nodeProps.name;
+        this.type = this.cJson.name;
     },
 };
 </script>

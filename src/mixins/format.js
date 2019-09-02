@@ -17,7 +17,11 @@ export default {
     beforeMount() {
         this.insertComponent(this);
         if (this.cJson && this.cJson.id) {
-            drawWeb(this.cJson);
+            this.id = this.cJson.id;
+            drawWeb(this.cJson, this);
+            if (this.cJson.childNodes) {
+                this.childNodes = this.cJson.childNodes;
+            }
         } else {
             this.id = randomId(this.$store.state.allWebJson);
             this.struct = initWeb(this);

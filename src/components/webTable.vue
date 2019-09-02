@@ -56,13 +56,13 @@ export default {
         };
     },
     beforeMount() {
-        this.getWebList();
+        this.getPageList();
     },
     methods: {
-        async getWebList() {
+        async getPageList() {
             try {
                 const res = await post({
-                    url: '/getWebList',
+                    url: '/getPageList',
                 });
                 res.data.forEach((elem) => {
                     this.webList.push({

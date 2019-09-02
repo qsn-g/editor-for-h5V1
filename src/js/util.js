@@ -38,14 +38,16 @@ const addJson = (webJson, fatherId, struct) => {
     }
     if (webJson.childNodes) webJson.childNodes.some(item => addJson(item, fatherId, struct));
 };
-const drawWeb = () => {};
+const drawWeb = (struct, component) => {
+    component.$data.struct = struct;
+};
 const initWeb = (component) => {
     const struct = {
         name: component.name,
         id: component.id,
         options: {},
     };
-    if (component.childNodes) struct.childNodes = component.childNodes;
+    if (component.name === 'Jcontainer') struct.childNodes = [];
     return struct;
 };
 const cbToWJ = (struct) => {

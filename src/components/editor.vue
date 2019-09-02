@@ -33,11 +33,12 @@
                         :key="plugin.id "
                         @click="addPlugin"
                     >{{ plugin.name }}</el-button>
+                    <el-button type="primary" circle icon="el-icon-upload" @click="testFun"></el-button>
                 </el-row>
             </div>
         </el-drawer>
         <el-row id="workSpace">
-            <Container :cJson="test" :plugins="plugins"></Container>
+            <Container :cJson="cJson"></Container>
         </el-row>
     </div>
 </template>
@@ -47,6 +48,7 @@
 /* eslint-disable no-underscore-dangle */
 import { mapActions } from 'vuex';
 import Vue from 'vue';
+import { post } from '@/js/ajax';
 import eventBus from '@/js/eventBus';
 import { sendError } from '@/js/msgBox';
 import Container from '@/plugins/Jcontainer';
@@ -57,7 +59,8 @@ const plugins = getPluginsFromContext(localRq);
 Object.keys(plugins).forEach((item) => {
     Vue.component(item, plugins[item]);
 });
-const test2 = {};
+let test2 = JSON.parse(localStorage.getItem('wj'));
+test2 = test2 || {};
 export default {
     name: 'editor',
     data() {
@@ -65,7 +68,7 @@ export default {
             drawer: false,
             dialogFormVisible: false,
             plugins,
-            test: test2,
+            cJson: {},
         };
     },
     components: { Container },
@@ -77,15 +80,10 @@ export default {
             });
             return;
         }
-        document.onmousemove = (e) => {
-            if (e.clientX + 20 >= window.innerWidth) {
-                this.drawer = true;
-            }
-        };
-        document.oncontextmenu = (e) => {
-            this.resetFocus();
-            e.preventDefault();
-        };
+        if (_id) {
+            this.cJson = this.getPageData(_id);
+        }
+        this.mouseMove();
         this.initEventBus();
     },
     beforeDestroy() {
@@ -119,11 +117,35 @@ export default {
                 name: e.target.innerText,
             };
             const focusElem = this.$store.state.focusElem;
-            if (!focusElem.id || !focusElem.childNodes) {
+            if (!focusElem.id || !focusElem.struct.childNodes) {
                 sendError('该组件无法添加子组件');
                 return;
             }
             focusElem.childNodes.push(componentObj);
+        },
+        mouseMove() {
+            document.onmousemove = (e) => {
+                if (e.clientX + 20 >= window.innerWidth) {
+                    this.drawer = true;
+                }
+            };
+            document.oncontextmenu = (e) => {
+                this.resetFocus();
+                e.preventDefault();
+            };
+        },
+        async getPageData(_id) {
+            const res = await post({
+                url: '/getPageData',
+                data: {
+                    _id,
+                },
+            });
+        },
+        testFun() {
+            const wj = this.$store.state.webJson;
+            // console.log(wj);
+            localStorage.setItem('wj', JSON.stringify(wj));
         },
     },
 };
