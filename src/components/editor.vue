@@ -33,7 +33,13 @@
                         :key="plugin.id "
                         @click="addPlugin"
                     >{{ plugin.name }}</el-button>
-                    <el-button type="primary" circle icon="el-icon-upload" @click="testFun"></el-button>
+                    <el-button
+                        class="upload"
+                        type="info"
+                        circle
+                        icon="el-icon-upload"
+                        @click="saveWj"
+                    ></el-button>
                 </el-row>
             </div>
         </el-drawer>
@@ -50,7 +56,7 @@ import { mapActions } from 'vuex';
 import Vue from 'vue';
 import { post } from '@/js/ajax';
 import eventBus from '@/js/eventBus';
-import { sendError } from '@/js/msgBox';
+import { sendError, sendSuccess } from '@/js/msgBox';
 import Container from '@/plugins/Jcontainer';
 import { getPluginsFromContext } from '../js/util';
 
@@ -65,6 +71,7 @@ export default {
     name: 'editor',
     data() {
         return {
+            id: '',
             drawer: false,
             dialogFormVisible: false,
             plugins,
@@ -81,6 +88,7 @@ export default {
             return;
         }
         if (_id) {
+            this.id = _id;
             this.cJson = this.getPageData(_id);
         }
         this.mouseMove();
@@ -142,10 +150,33 @@ export default {
                 },
             });
         },
-        testFun() {
-            const wj = this.$store.state.webJson;
-            // console.log(wj);
-            localStorage.setItem('wj', JSON.stringify(wj));
+        async createPage() {
+            const { webName } = this.$route.params;
+            const res = await post({
+                url: '/newEditor',
+                data: {
+                    webName,
+                },
+            });
+            return res.data._id;
+        },
+        async saveWj() {
+            try {
+                if (!this.id) {
+                    this.id = await this.createPage();
+                }
+                const webJson = this.$store.state.webJson;
+                const res = await post({
+                    url: '/saveWj',
+                    data: {
+                        webJson,
+                        id: this.id,
+                    },
+                });
+                sendSuccess(res.data);
+            } catch (e) {
+                sendError(e);
+            }
         },
     },
 };
@@ -163,6 +194,8 @@ export default {
 }
 .content .el-row {
     margin-top: 10px;
+}
+.content .el-row button {
 }
 #workSpace {
     display: flex;

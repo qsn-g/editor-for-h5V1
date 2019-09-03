@@ -34,7 +34,7 @@
                             circle
                             type="danger"
                             icon="el-icon-delete"
-                            @click="rtest(scope.row._id)"
+                            @click="deletePage(scope.row._id)"
                         ></el-button>
                     </template>
                 </el-table-column>
@@ -101,15 +101,19 @@ export default {
                 sendError(err);
             }
         },
-        rtest(webId) {
-            post({
+        async deletePage(webId) {
+            const res = await post({
                 url: '/removeWeb',
                 data: {
                     webId,
                 },
-            }).then(() => {
-                sendSuccess('删除成功');
             });
+            const index = this.webList.indexOf(
+                // eslint-disable-next-line no-underscore-dangle
+                this.webList.find(item => item._id === webId),
+            );
+            this.webList.splice(index, 1);
+            sendSuccess(res.data);
         },
     },
 };
