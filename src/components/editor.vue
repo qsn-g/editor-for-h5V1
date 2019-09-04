@@ -65,8 +65,6 @@ const plugins = getPluginsFromContext(localRq);
 Object.keys(plugins).forEach((item) => {
     Vue.component(item, plugins[item]);
 });
-let test2 = JSON.parse(localStorage.getItem('wj'));
-test2 = test2 || {};
 export default {
     name: 'editor',
     data() {
@@ -80,17 +78,16 @@ export default {
     },
     components: { Container },
     beforeMount() {
-        const { _id, webName } = this.$route.params;
+        const { _id, webName, webJson } = this.$route.params;
         if (!_id && !webName) {
             this.$router.push({
                 name: 'webTable',
             });
             return;
         }
-        if (_id) {
-            this.id = _id;
-            this.cJson = this.getPageData(_id);
-        }
+        this.id = _id;
+        this.cJson = webJson;
+        this.$store.state.webJson = webJson;
         this.mouseMove();
         this.initEventBus();
     },
@@ -142,14 +139,6 @@ export default {
                 e.preventDefault();
             };
         },
-        async getPageData(_id) {
-            const res = await post({
-                url: '/getPageData',
-                data: {
-                    _id,
-                },
-            });
-        },
         async createPage() {
             const { webName } = this.$route.params;
             const res = await post({
@@ -194,8 +183,6 @@ export default {
 }
 .content .el-row {
     margin-top: 10px;
-}
-.content .el-row button {
 }
 #workSpace {
     display: flex;

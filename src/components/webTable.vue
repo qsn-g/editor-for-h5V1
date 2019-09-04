@@ -74,10 +74,25 @@ export default {
                 sendError('网络出错');
             }
         },
-        newEditor(webInfo) {
+        async newEditor(webInfo) {
+            const { _id, webName } = webInfo;
+            let webJson = {};
+            if (_id) {
+                const res = await post({
+                    url: '/getPageData',
+                    data: {
+                        _id,
+                    },
+                });
+                webJson = res.data;
+            }
             this.$router.push({
                 name: 'webEditor',
-                params: webInfo,
+                params: {
+                    _id,
+                    webName,
+                    webJson,
+                },
             });
         },
         async updateName(e, webInfo) {

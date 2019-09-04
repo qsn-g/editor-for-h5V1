@@ -20,7 +20,7 @@ export default {
             this.id = this.cJson.id;
             drawWeb(this.cJson, this);
             if (this.cJson.childNodes) {
-                this.childNodes = this.cJson.childNodes;
+                this.childNodes = [...this.cJson.childNodes];
             }
         } else {
             this.id = randomId(this.$store.state.allWebJson);
