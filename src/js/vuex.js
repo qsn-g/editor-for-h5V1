@@ -20,9 +20,16 @@ export default new Vuex.Store({
             state.componentList = [];
         },
         setFocus(state, elem) {
+            state.componentList.forEach((item) => {
+                item.isFocus = false;
+            });
+            elem.isFocus = true;
             state.focusElem = elem;
         },
         resetFocus(state) {
+            state.componentList.forEach((item) => {
+                item.isFocus = false;
+            });
             state.focusElem = {};
         },
     },

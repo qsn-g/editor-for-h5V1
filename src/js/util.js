@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import nanoid from 'nanoid';
 import store from './vuex';
 /**
@@ -9,6 +10,10 @@ const timeParser = (timestamp) => {
     return `${t.getFullYear()}年${t.getMonth() + 1}月${t.getDate()}日 ${t.getHours()}:${t.getMinutes() >= 10 ? t.getMinutes() : `0${t.getMinutes()}`}`;
 };
 
+/**
+ * 随机生成组件的id
+ * @param {*} arr
+ */
 const randomId = (arr) => {
     const allWebJson = arr || [];
     let res = nanoid();
@@ -18,7 +23,10 @@ const randomId = (arr) => {
     }
     return res;
 };
-
+/**
+ * 获取plugins目录下的所有组件
+ * @param {*} context
+ */
 const getPluginsFromContext = (context) => {
     const res = {};
     context
@@ -29,8 +37,12 @@ const getPluginsFromContext = (context) => {
         });
     return res;
 };
-
-// eslint-disable-next-line consistent-return
+/**
+ * 增加子组件json
+ * @param {*} webJson store中的webJson
+ * @param {*} fatherId 在该json结构下childNodes里增加struct
+ * @param {*} struct 子组件结构
+ */
 const addJson = (webJson, fatherId, struct) => {
     if (webJson.id === fatherId) {
         webJson.childNodes.push(struct);
@@ -38,9 +50,44 @@ const addJson = (webJson, fatherId, struct) => {
     }
     if (webJson.childNodes) webJson.childNodes.some(item => addJson(item, fatherId, struct));
 };
+/**
+ * 查找目标组件id的json结构并执行cb函数
+ * @param {*} componentId 组件id
+ * @param {*} cb 回调函数
+ * @param {*} webJson store中的webJson
+ */
+const findJson = (componentId, cb, webJson = store.state.webJson) => {
+    if (webJson.id === componentId) {
+        cb(webJson);
+        return true;
+    }
+    if (webJson.childNodes) webJson.childNodes.some(item => findJson(componentId, cb, item));
+};
+/**
+ * 查找目标组件id的父组件json结构并执行cb函数
+ * @param {*} componentId 组件id
+ * @param {*} cb 回调函数
+ * @param {*} webJson store中的webJson
+ */
+const findFJson = (componentId, cb, webJson = store.state.webJson) => {
+    if (webJson.childNodes && webJson.childNodes.some(item => item.id === componentId)) {
+        cb(webJson);
+        return true;
+    }
+    if (webJson.childNodes) webJson.childNodes.some(item => findFJson(componentId, cb, item));
+};
+/**
+ * mixins中若有结构需要重绘
+ * @param {*} struct
+ * @param {*} component
+ */
 const drawWeb = (struct, component) => {
     component.$data.struct = struct;
 };
+/**
+ * mixins中若没有结构需要初始化（如添加新组件）
+ * @param {*} component
+ */
 const initWeb = (component) => {
     const struct = {
         name: component.name,
@@ -50,6 +97,10 @@ const initWeb = (component) => {
     if (component.name === 'Jcontainer') struct.childNodes = [];
     return struct;
 };
+/**
+ * 添加新组件时需要对store中的webJson添加结构
+ * @param {*} struct
+ */
 const cbToWJ = (struct) => {
     const webJson = store.state.webJson;
     if (webJson.id) {
@@ -59,4 +110,4 @@ const cbToWJ = (struct) => {
         store.state.webJson = struct;
     }
 };
-export { timeParser, randomId, getPluginsFromContext, drawWeb, initWeb, cbToWJ };
+export { timeParser, randomId, getPluginsFromContext, drawWeb, initWeb, cbToWJ, findJson, findFJson };

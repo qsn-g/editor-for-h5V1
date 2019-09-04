@@ -1,5 +1,5 @@
 <template>
-    <Jdiv :id="id" class="j-container" :class="{'is-focus': isFocus}">
+    <Jdiv :id="id" class="j-container" :class="{'is-focus':isFocus}">
         <template slot="input">
             <AnyType v-for="node in childNodes" :key="node.id" :cJson="node"></AnyType>
         </template>
@@ -17,7 +17,6 @@ export default {
     data() {
         return {
             name: 'Jcontainer',
-            isFocus: false,
             childNodes: [],
         };
     },
@@ -27,7 +26,4 @@ export default {
 </script>
 
 <style scoped>
-.is-focus {
-    background: #ecf5ff;
-}
 </style>

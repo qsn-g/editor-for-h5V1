@@ -1,6 +1,8 @@
 <template>
-    <Jdiv :id="id" class="j-image" :class="{'is-focus':isFocus}">
-        <template slot="input">Jimage</template>
+    <Jdiv :id="id" class="j-table" :class="{'is-focus':isFocus}">
+        <template slot="input">
+            <el-table></el-table>
+        </template>
     </Jdiv>
 </template>
 
@@ -8,11 +10,11 @@
 import FormatMixin from '@/mixins/format';
 
 export default {
-    name: 'Jimage',
+    name: 'Jtable',
     mixins: [FormatMixin],
     data() {
         return {
-            name: 'Jimage',
+            name: 'Jtable',
         };
     },
 };

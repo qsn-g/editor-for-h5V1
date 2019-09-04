@@ -27,5 +27,10 @@ export default {
 .Jdiv {
     display: flex;
     flex: 1;
+    outline: none;
+}
+
+.is-focus {
+    border: 1px solid #b5d5f8;
 }
 </style>

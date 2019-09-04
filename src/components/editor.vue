@@ -25,6 +25,7 @@
                             icon="el-icon-caret-right"
                             size="mini"
                         />
+                        <el-button circle size="mini" @click="layout(3)">父</el-button>
                     </span>
                 </el-row>
                 <el-row>
@@ -58,7 +59,7 @@ import { post } from '@/js/ajax';
 import eventBus from '@/js/eventBus';
 import { sendError, sendSuccess } from '@/js/msgBox';
 import Container from '@/plugins/Jcontainer';
-import { getPluginsFromContext } from '../js/util';
+import { getPluginsFromContext, findFJson } from '../js/util';
 
 const localRq = require.context('../plugins', true, /\.vue$/);
 const plugins = getPluginsFromContext(localRq);
@@ -99,7 +100,12 @@ export default {
         this.removeEventBus();
     },
     methods: {
-        ...mapActions(['resetFocus', 'resetComponents', 'resetWebJson']),
+        ...mapActions([
+            'resetFocus',
+            'resetComponents',
+            'resetWebJson',
+            'setFocus',
+        ]),
         layout(index) {
             const id = this.$store.state.focusElem.id;
             const elem = id
@@ -109,6 +115,24 @@ export default {
                 elem.style.flexDirection = 'column';
             } else if (index === 2) {
                 elem.style.flexDirection = 'row';
+            } else if (index === 3) {
+                try {
+                    if (!id) {
+                        sendError('请选择子组件');
+                        return;
+                    }
+                    let fatherId = null;
+                    findFJson(id, (struct) => {
+                        fatherId = struct.id;
+                    });
+                    const fatherComponent = this.$store.state.componentList.find(
+                        item => item.id === fatherId,
+                    );
+                    this.setFocus(fatherComponent);
+                } catch (e) {
+                    sendError('该组件没有父组件');
+                    this.resetFocus();
+                }
             }
         },
         initEventBus() {

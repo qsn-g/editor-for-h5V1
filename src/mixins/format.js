@@ -5,6 +5,7 @@ export default {
     props: ['cJson'],
     data() {
         return {
+            isFocus: false,
             id: '',
             struct: {
                 name: '',
