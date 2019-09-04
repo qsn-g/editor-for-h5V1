@@ -59,7 +59,7 @@ import { post } from '@/js/ajax';
 import eventBus from '@/js/eventBus';
 import { sendError, sendSuccess } from '@/js/msgBox';
 import Container from '@/plugins/Jcontainer';
-import { getPluginsFromContext, findFJson } from '../js/util';
+import { getPluginsFromContext, findFJson, findJson } from '../js/util';
 
 const localRq = require.context('../plugins', true, /\.vue$/);
 const plugins = getPluginsFromContext(localRq);
@@ -111,10 +111,16 @@ export default {
             const elem = id
                 ? document.getElementById(id)
                 : document.getElementById('workSpace');
+            let component;
+            findJson(id, (json) => {
+                component = json;
+            });
             if (index === 1) {
                 elem.style.flexDirection = 'column';
+                component.options.style['flex-direction'] = 'column';
             } else if (index === 2) {
                 elem.style.flexDirection = 'row';
+                component.options.style['flex-direction'] = 'row';
             } else if (index === 3) {
                 try {
                     if (!id) {

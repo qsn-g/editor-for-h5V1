@@ -15,6 +15,7 @@ export default {
             },
         };
     },
+    watch: {},
     beforeMount() {
         this.insertComponent(this);
         if (this.cJson && this.cJson.id) {
@@ -27,6 +28,16 @@ export default {
             this.id = randomId(this.$store.state.allWebJson);
             this.struct = initWeb(this);
             cbToWJ(this.struct);
+        }
+    },
+    mounted() {
+        if (this.struct.options.style) {
+            const style = this.struct.options.style;
+            let styleStr = '';
+            Object.keys(style).forEach((key) => {
+                styleStr += `${key}: ${style[key]};`;
+            });
+            this.$el.setAttribute('style', styleStr);
         }
     },
     methods: {
