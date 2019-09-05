@@ -138,8 +138,6 @@ export default {
 #webTable {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    overflow: auto;
 }
 .buttonList .el-button {
     margin: 10px 0px 10px 15px;

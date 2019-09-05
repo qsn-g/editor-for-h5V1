@@ -10,38 +10,53 @@
         >
             <div class="content">
                 <h4>当前焦点: {{$store.state.focusElem.id ? '已聚焦' : '无'}}</h4>
-                <el-row style="display:flex;justify-content:space-between">
+                <el-row>
                     <span>选择布局:</span>
-                    <span>
+                    <span class="button-area">
                         <el-button
+                            type="primary"
                             @click="layout(1)"
                             circle
                             icon="el-icon-caret-bottom"
                             size="mini"
                         />
                         <el-button
+                            type="primary"
                             @click="layout(2)"
                             circle
                             icon="el-icon-caret-right"
                             size="mini"
                         />
-                        <el-button circle size="mini" @click="layout(3)">父</el-button>
+                        <el-button type="primary" circle size="mini" @click="layout(3)">父</el-button>
                     </span>
                 </el-row>
                 <el-row>
-                    <el-button
-                        v-for="plugin in plugins"
-                        :key="plugin.id "
-                        @click="addPlugin"
-                    >{{ plugin.name }}</el-button>
-                    <el-button
-                        class="upload"
-                        type="info"
-                        circle
-                        icon="el-icon-upload"
-                        @click="saveWj"
-                    ></el-button>
+                    <span>通用按钮:</span>
+                    <span class="button-area">
+                        <el-button
+                            type="info"
+                            @click="propConfig"
+                            circle
+                            size="mini"
+                            icon="el-icon-s-tools"
+                        ></el-button>
+                    </span>
                 </el-row>
+                <el-row style="flex-direction: column;align-items: flex-start">
+                    <span>组件库:</span>
+                    <span class="component-button">
+                        <el-button
+                            round
+                            size="small"
+                            type="warning"
+                            v-for="plugin in plugins"
+                            :key="plugin.id "
+                            @click="addPlugin(plugin.name)"
+                        >{{ pluginsName[plugin.name] }}</el-button>
+                    </span>
+                </el-row>
+
+                <el-button class="upload" type="info" circle icon="el-icon-upload" @click="saveWj"></el-button>
             </div>
         </el-drawer>
         <el-row id="workSpace">
@@ -60,6 +75,7 @@ import eventBus from '@/js/eventBus';
 import { sendError, sendSuccess } from '@/js/msgBox';
 import Container from '@/plugins/Jcontainer';
 import { getPluginsFromContext, findFJson, findJson } from '../js/util';
+import pluginsName from '../pluginsName.json';
 
 const localRq = require.context('../plugins', true, /\.vue$/);
 const plugins = getPluginsFromContext(localRq);
@@ -74,6 +90,7 @@ export default {
             drawer: false,
             dialogFormVisible: false,
             plugins,
+            pluginsName,
             cJson: {},
         };
     },
@@ -122,6 +139,7 @@ export default {
                 elem.style.flexDirection = 'row';
                 component.options.style['flex-direction'] = 'row';
             } else if (index === 3) {
+                // 寻找父组件
                 try {
                     if (!id) {
                         sendError('请选择子组件');
@@ -147,9 +165,9 @@ export default {
         removeEventBus() {
             eventBus.$off('openDialog', this.openDialog);
         },
-        addPlugin(e) {
+        addPlugin(name) {
             const componentObj = {
-                name: e.target.innerText,
+                name,
             };
             const focusElem = this.$store.state.focusElem;
             if (!focusElem.id || !focusElem.struct.childNodes) {
@@ -168,6 +186,14 @@ export default {
                 this.resetFocus();
                 e.preventDefault();
             };
+        },
+        propConfig() {
+            const focusElem = this.$store.state.focusElem;
+            if (!focusElem.id) {
+                sendError('请选择正确组件');
+                return;
+            }
+            focusElem.configVisible = true;
         },
         async createPage() {
             const { webName } = this.$route.params;
@@ -213,10 +239,24 @@ export default {
 }
 .content .el-row {
     margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.content .button-area {
+    margin-left: 5px;
+}
+.component-button {
+    flex-wrap: wrap;
+    display: flex;
+}
+.component-button .el-button {
+    margin-top: 10px;
 }
 #workSpace {
     display: flex;
     flex-direction: row;
     flex: 1;
+    overflow: hidden;
 }
 </style>
