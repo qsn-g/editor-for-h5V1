@@ -2,6 +2,7 @@
     <Jdiv :id="id" class="j-table" :class="{'is-focus':isFocus}">
         <template slot="input">
             <el-table></el-table>
+            <el-dialog :title="`设置表格`" :visible.sync="configVisible"></el-dialog>
         </template>
     </Jdiv>
 </template>

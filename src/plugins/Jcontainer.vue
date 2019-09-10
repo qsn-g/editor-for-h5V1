@@ -28,4 +28,7 @@ export default {
 </script>
 
 <style scoped>
+.j-container {
+    overflow: auto;
+}
 </style>
