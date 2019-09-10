@@ -2,20 +2,14 @@
 
 > a webApp for jzx to make a new web
 
-## Build Setup
+## 开发步骤
 
-```bash
-# install dependencies
-npm install
+> 注意事项
 
-# serve with hot reload at localhost:8080
-npm run dev
+1. 该项目为前端部分,运行该项目需要同时 git clone 两个项目
 
-# build for production with minification
-npm run build
+> 安装
 
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+npm install
+```
