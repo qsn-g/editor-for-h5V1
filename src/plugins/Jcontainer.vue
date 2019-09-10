@@ -1,5 +1,5 @@
 <template>
-    <Jdiv :id="id" class="j-container" :class="{'is-focus':isFocus}">
+    <Jdiv :id="id" class="j-container" :class="{'is-focus':isFocus}" :style="struct.options.style">
         <template slot="input">
             <AnyType v-for="node in childNodes" :key="node.id" :cJson="node"></AnyType>
         </template>
@@ -20,7 +20,9 @@ export default {
             childNodes: [],
         };
     },
-    beforeMount() {},
+    beforeMount() {
+        if (!Array.isArray(this.struct.childNodes)) this.struct.childNodes = [];
+    },
     methods: {},
 };
 </script>

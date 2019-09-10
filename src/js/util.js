@@ -96,7 +96,6 @@ const initWeb = (component) => {
             style: {},
         },
     };
-    if (component.name === 'Jcontainer') struct.childNodes = [];
     return struct;
 };
 /**
