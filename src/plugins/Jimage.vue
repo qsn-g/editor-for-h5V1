@@ -126,7 +126,6 @@ export default {
     overflow: scroll;
     white-space: nowrap;
     outline: none;
-    user-select: none;
 }
 .preview-area i {
     display: block;
