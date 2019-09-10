@@ -7,7 +7,7 @@
             ></el-image>
             <el-dialog :title="`设置图片`" :visible.sync="configVisible">
                 <div class="preview-area">
-                    <i class="el-icon-plus">添加图片</i>
+                    <i class="el-icon-plus">添加图片 (第一张图将作为封面,可通过拖拽进行调整)</i>
                     <vd :options="{group: 'pir'}" v-model="imageUrlList">
                         <el-image
                             class="preview-img"
@@ -40,7 +40,7 @@
                     </vd>
                 </div>
                 <div slot="footer">
-                    <el-button @click="configVisible=false">取消</el-button>
+                    <el-button @click="onCancel">取消</el-button>
                     <el-button @click="onSave" type="primary">保存</el-button>
                 </div>
             </el-dialog>
@@ -65,7 +65,17 @@ export default {
             coverUrl: '',
             imageUrlList: [],
             deleteList: [],
+            oldDeleteList: [],
+            oldImageUrlList: [],
         };
+    },
+    watch: {
+        configVisible(newValue) {
+            if (newValue) {
+                this.oldDeleteList = [...this.deleteList];
+                this.oldImageUrlList = [...this.imageUrlList];
+            }
+        },
     },
     beforeMount() {
         if (!Array.isArray(this.struct.options.imgList)) {
@@ -93,6 +103,14 @@ export default {
         },
         onSave() {
             this.struct.options.imgList = this.imageUrlList;
+            this.configVisible = false;
+        },
+        onCancel() {
+            this.configVisible = false;
+            this.deleteList = [...this.oldDeleteList];
+            this.imageUrlList = [...this.oldImageUrlList];
+            this.oldDeleteList = [];
+            this.oldImageUrlList = [];
         },
     },
 };
