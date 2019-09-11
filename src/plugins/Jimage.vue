@@ -102,7 +102,7 @@ export default {
             this.$message.error(`${res}`);
         },
         onSave() {
-            this.struct.options.imgList = this.imageUrlList;
+            this.struct.options.imgList = [...this.imageUrlList];
             this.configVisible = false;
         },
         onCancel() {
