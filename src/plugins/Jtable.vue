@@ -132,10 +132,6 @@ export default {
 </script>
 
 <style scoped>
-.j-table {
-    height: 100%;
-    width: 100%;
-}
 .el-table {
     overflow: auto;
 }
