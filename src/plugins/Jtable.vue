@@ -9,7 +9,7 @@
                     :prop="prop"
                 />
             </el-table>
-            <el-dialog :title="`设置表格`" :visible.sync="configVisible">
+            <el-dialog v-loading="loading" :title="`设置表格`" :visible.sync="configVisible">
                 <el-table border :data="dataSource">
                     <el-table-column
                         v-for="prop in headers"
@@ -34,8 +34,16 @@
                     </el-table-column>
                 </el-table>
                 <div slot="footer">
-                    <el-button @click="onCancel">取消</el-button>
-                    <el-button @click="onSave" type="primary">保存</el-button>
+                    <el-upload
+                        action
+                        style="display: inline-block"
+                        :show-file-list="false"
+                        :http-request="uploadExcel"
+                    >
+                        <el-button type="text">上传excel文件</el-button>
+                    </el-upload>
+                    <el-button size="small" @click="onCancel">取消</el-button>
+                    <el-button size="small" @click="onSave" type="primary">保存</el-button>
                 </div>
             </el-dialog>
         </template>
@@ -44,6 +52,8 @@
 
 <script>
 import FormatMixin from '@/mixins/format';
+import { sendError } from '@/js/msgBox';
+import XLSX from 'xlsx';
 
 export default {
     name: 'Jtable',
@@ -54,6 +64,7 @@ export default {
             sheaders: [],
             headers: [],
             dataSource: [],
+            loading: false,
         };
     },
     beforeMount() {
@@ -125,6 +136,49 @@ export default {
                 this.changeHeaders();
             } catch (e) {
                 this.$message.error('取消添加');
+            }
+        },
+        uploadExcel(fileInfo) {
+            try {
+                this.loading = true;
+                const { file } = fileInfo;
+                this.headers = [];
+                this.dataSource = [];
+                this.readExcel(file, (data) => {
+                    const sheet = data.Sheets[data.SheetNames[0]];
+                    Object.keys(sheet).forEach((key) => {
+                        if (key !== '!ref') {
+                            if (key[1] === '1') {
+                                this.headers.push(sheet[key].w);
+                            } else if (!this.dataSource[key[1] - 2]) {
+                                this.dataSource.push({
+                                    [sheet[`${key[0]}1`].w]: sheet[key].w,
+                                });
+                            } else if (this.dataSource[key[1] - 2]) {
+                                this.dataSource[key[1] - 2][
+                                    sheet[`${key[0]}1`].w
+                                ] = sheet[key].w;
+                            }
+                        }
+                    });
+                    this.loading = false;
+                });
+            } catch (error) {
+                this.loading = false;
+                sendError(error);
+            }
+        },
+        readExcel(file, cb) {
+            try {
+                const fr = new FileReader();
+                fr.onload = (e) => {
+                    const { result } = e.target;
+                    const fileContent = XLSX.read(result, { type: 'binary' });
+                    if (cb) cb(fileContent);
+                };
+                fr.readAsBinaryString(file);
+            } catch (e) {
+                sendError(e);
             }
         },
     },
