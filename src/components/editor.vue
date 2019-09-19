@@ -173,8 +173,10 @@ export default {
         },
         mouseMove() {
             document.onmousemove = (e) => {
-                if (e.clientX + 20 >= window.innerWidth) {
+                if (e.clientX + 10 >= window.innerWidth) {
                     this.drawer = true;
+                } else if (e.clientX + 400 < window.innerWidth) {
+                    this.drawer = false;
                 }
             };
             document.oncontextmenu = (e) => {

@@ -17,10 +17,7 @@
                         :prop="prop"
                         :label="prop"
                     ></el-table-column>
-                    <el-table-column align="center">
-                        <template slot="header">
-                            <el-button type="text" @click="addHeaders">增加表头</el-button>
-                        </template>
+                    <el-table-column align="center" label="操作">
                         <template slot-scope="scope">
                             <el-button
                                 @click="deleteRecord(scope.$index, scope)"
@@ -121,23 +118,6 @@ export default {
             });
             this.sheaders = res;
         },
-        async addHeaders() {
-            try {
-                const res = await this.$prompt('新增表头字段', '提示', {
-                    confirmButtonText: '添加',
-                    cancelButtonText: '取消',
-                    inputPattern: /\S/,
-                    inputErrorMessage: '表头字段不能为空',
-                });
-                const { value } = res;
-                this.dataSource.forEach((item) => {
-                    item[value] = '-';
-                });
-                this.changeHeaders();
-            } catch (e) {
-                this.$message.error('取消添加');
-            }
-        },
         uploadExcel(fileInfo) {
             try {
                 this.loading = true;
@@ -169,17 +149,20 @@ export default {
             }
         },
         readExcel(file, cb) {
-            try {
-                const fr = new FileReader();
-                fr.onload = (e) => {
+            const fr = new FileReader();
+            fr.onload = (e) => {
+                try {
                     const { result } = e.target;
-                    const fileContent = XLSX.read(result, { type: 'binary' });
+                    const fileContent = XLSX.read(result, {
+                        type: 'binary',
+                    });
                     if (cb) cb(fileContent);
-                };
-                fr.readAsBinaryString(file);
-            } catch (e) {
-                sendError(e);
-            }
+                } catch (error) {
+                    sendError(error);
+                    this.loading = false;
+                }
+            };
+            fr.readAsBinaryString(file);
         },
     },
 };
