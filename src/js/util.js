@@ -96,6 +96,7 @@ const initWeb = (component) => {
             style: {},
         },
     };
+    if (component.name === 'Jcontainer') struct.childNodes = [];
     return struct;
 };
 /**
@@ -107,6 +108,15 @@ const cbToWJ = (struct) => {
     if (webJson.id) {
         const fatherElem = store.state.focusElem;
         addJson(store.state.webJson, fatherElem.id, struct);
+        findFJson(struct.id, (s) => {
+            s.childNodes.some((item, index) => {
+                if (!item.id) {
+                    s.childNodes.splice(index, 1);
+                    return true;
+                }
+                return false;
+            });
+        });
     } else {
         store.state.webJson = struct;
     }

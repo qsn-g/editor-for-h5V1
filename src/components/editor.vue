@@ -40,6 +40,13 @@
                             size="mini"
                             icon="el-icon-s-tools"
                         ></el-button>
+                        <el-button
+                            @click="deletePlugin"
+                            type="info"
+                            icon="el-icon-delete"
+                            size="mini"
+                            circle
+                        ></el-button>
                     </span>
                 </el-row>
                 <el-row style="flex-direction: column;align-items: flex-start">
@@ -168,6 +175,26 @@ export default {
                 return;
             }
             focusElem.childNodes.push(componentObj);
+        },
+        deletePlugin() {
+            const focusElem = this.$store.state.focusElem;
+            if (!focusElem.id) {
+                sendError('请选择正确组件');
+                return;
+            }
+            findFJson(focusElem.id, (struct) => {
+                let index = -1;
+                const focusID = focusElem.id;
+                // 删除webJson结构中的
+                struct.childNodes.some((item, i) => {
+                    if (item.id === focusID) {
+                        index = i;
+                        return true;
+                    }
+                    return false;
+                });
+                struct.childNodes.splice(index, 1);
+            });
         },
         mouseMove() {
             document.onmousemove = (e) => {

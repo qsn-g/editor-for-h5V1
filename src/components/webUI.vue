@@ -23,6 +23,9 @@ export default {
                     _id: id,
                 },
             });
+            if (res.data === -1) {
+                sendError('无该编辑页面');
+            }
             this.cJson = res.data;
             this.loading = true;
         }
