@@ -1,5 +1,10 @@
 <template>
-    <Jdiv :id="id" class="j-container" :class="{'is-focus':isFocus}" :style="struct.options.style">
+    <Jdiv
+        :id="id"
+        class="j-container"
+        :class="{'is-focus':isFocus && isEditor}"
+        :style="struct.options.style"
+    >
         <template slot="input">
             <AnyType v-for="node in childNodes" :key="node.id" :cJson="node"></AnyType>
         </template>

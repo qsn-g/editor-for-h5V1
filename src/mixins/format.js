@@ -16,7 +16,11 @@ export default {
             },
         };
     },
-    watch: {},
+    computed: {
+        isEditor() {
+            return this.$route.name !== 'getWebUI';
+        },
+    },
     beforeMount() {
         this.insertComponent(this);
         if (this.cJson && this.cJson.id) {

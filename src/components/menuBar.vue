@@ -29,6 +29,11 @@ export default {
                     label: '查看网页',
                     class: 'el-icon-search',
                 },
+                {
+                    index: '/getWebUI',
+                    label: '生成网页',
+                    class: 'el-icon-refresh',
+                },
             ],
         };
     },

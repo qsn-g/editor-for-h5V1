@@ -5,6 +5,6 @@ const post = (params) => {
     return axios.post(`/jpi/webEditor${url}`, data);
 };
 
-const get = url => axios.get(url);
+const get = url => axios.get(`/jpi/webEditor${url}`);
 
 export { post, get };

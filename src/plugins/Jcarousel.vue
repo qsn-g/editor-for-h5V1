@@ -1,5 +1,5 @@
 <template>
-    <Jdiv :id="id" class="j-carousel" :class="{'is-focus':isFocus}">
+    <Jdiv :id="id" class="j-carousel" :class="{'is-focus':isFocus && isEditor}">
         <template slot="input">
             <el-carousel></el-carousel>
         </template>

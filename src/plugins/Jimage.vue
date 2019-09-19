@@ -1,5 +1,5 @@
 <template>
-    <Jdiv :id="id" class="j-image" :class="{'is-focus':isFocus}">
+    <Jdiv :id="id" class="j-image" :class="{'is-focus':isFocus && isEditor}">
         <template slot="input">
             <el-image
                 :src="struct.options.imgList[0] || ''"

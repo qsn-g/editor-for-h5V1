@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <menuBar />
+        <menuBar v-if="isPreview" />
         <router-view class="rightBar"></router-view>
     </div>
 </template>
@@ -13,10 +13,11 @@ export default {
     components: {
         menuBar,
     },
-    data() {
-        return {};
+    computed: {
+        isPreview() {
+            return this.$route.name !== 'getWebUI';
+        },
     },
-    mounted() {},
 };
 </script>
 

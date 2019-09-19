@@ -10,8 +10,17 @@
             ></el-button>
         </el-row>
         <el-row class="table">
-            <el-table :data="webList" :default-sort="{prop: 'date', order: 'descending'}">
+            <el-table
+                v-loading="loading"
+                :data="webList"
+                :default-sort="{prop: 'date', order: 'descending'}"
+            >
                 <el-table-column type="index"></el-table-column>
+                <el-table-column label="页面id">
+                    <template slot-scope="{row}">
+                        <span style="user-select: text;">{{ row._id }}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="更新时间" prop="date" sortable></el-table-column>
                 <el-table-column label="网页名称" sortable>
                     <template slot-scope="scope">
@@ -46,13 +55,14 @@
 <script>
 import { post } from '@/js/ajax';
 import { timeParser } from '@/js/util';
-import { sendError, sendSuccess } from '../js/msgBox';
+import { sendError, sendSuccess } from '@/js/msgBox';
 
 export default {
     data() {
         return {
             webList: [],
             uName: false,
+            loading: false,
         };
     },
     beforeMount() {
@@ -60,6 +70,7 @@ export default {
     },
     methods: {
         async getPageList() {
+            this.loading = true;
             try {
                 const res = await post({
                     url: '/getPageList',
@@ -70,8 +81,10 @@ export default {
                         date: timeParser(elem.mTime),
                     });
                 });
+                this.loading = false;
             } catch (err) {
                 sendError('网络出错');
+                this.loading = false;
             }
         },
         async newEditor(webInfo) {

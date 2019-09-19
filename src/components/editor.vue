@@ -60,7 +60,7 @@
             </div>
         </el-drawer>
         <el-row id="workSpace">
-            <Container :cJson="cJson"></Container>
+            <Jcontainer :cJson="cJson"></Jcontainer>
         </el-row>
     </div>
 </template>
@@ -73,8 +73,7 @@ import Vue from 'vue';
 import { post } from '@/js/ajax';
 import eventBus from '@/js/eventBus';
 import { sendError, sendSuccess } from '@/js/msgBox';
-import Container from '@/plugins/Jcontainer';
-import { getPluginsFromContext, findFJson, findJson } from '../js/util';
+import { getPluginsFromContext, findFJson, findJson } from '@/js/util';
 import pluginsName from '../pluginsName.json';
 
 const localRq = require.context('../plugins', true, /\.vue$/);
@@ -94,7 +93,6 @@ export default {
             cJson: {},
         };
     },
-    components: { Container },
     beforeMount() {
         const { _id, webName, webJson } = this.$route.params;
         if (!_id && !webName) {

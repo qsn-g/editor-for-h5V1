@@ -1,5 +1,5 @@
 <template>
-    <Jdiv :id="id" class="j-table" :class="{'is-focus':isFocus}">
+    <Jdiv :id="id" class="j-table" :class="{'is-focus':isFocus && isEditor}">
         <template slot="input">
             <el-table :data="struct.options.dataSource">
                 <el-table-column
