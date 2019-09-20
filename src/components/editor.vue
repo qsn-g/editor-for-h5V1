@@ -80,7 +80,12 @@ import Vue from 'vue';
 import { post } from '@/js/ajax';
 import eventBus from '@/js/eventBus';
 import { sendError, sendSuccess } from '@/js/msgBox';
-import { getPluginsFromContext, findFJson, findJson } from '@/js/util';
+import {
+    getPluginsFromContext,
+    findFJson,
+    findJson,
+    removeFromVuex,
+} from '@/js/util';
 import pluginsName from '../pluginsName.json';
 
 const localRq = require.context('../plugins', true, /\.vue$/);
@@ -193,7 +198,9 @@ export default {
                     }
                     return false;
                 });
-                struct.childNodes.splice(index, 1);
+                const deleteStruct = struct.childNodes.splice(index, 1);
+                removeFromVuex(deleteStruct[0]);
+                this.resetFocus();
             });
         },
         mouseMove() {

@@ -107,6 +107,7 @@ const cbToWJ = (struct) => {
     const webJson = store.state.webJson;
     if (webJson.id) {
         const fatherElem = store.state.focusElem;
+        const componentList = store.state.componentList;
         addJson(store.state.webJson, fatherElem.id, struct);
         findFJson(struct.id, (s) => {
             s.childNodes.some((item, index) => {
@@ -117,8 +118,31 @@ const cbToWJ = (struct) => {
                 return false;
             });
         });
+        componentList.some((item, index) => {
+            if (!item.cJson.id) {
+                componentList.splice(index, 1);
+                return true;
+            }
+            return false;
+        });
     } else {
         store.state.webJson = struct;
     }
 };
-export { timeParser, randomId, getPluginsFromContext, drawWeb, initWeb, cbToWJ, findJson, findFJson };
+
+const removeFromVuex = (deleteStruct) => {
+    if (deleteStruct.childNodes) {
+        deleteStruct.childNodes.forEach((item) => {
+            removeFromVuex(item);
+        });
+    }
+    const componentList = store.state.componentList;
+    componentList.some((item, index) => {
+        if (item.id === deleteStruct.id) {
+            componentList.splice(index, 1);
+            return true;
+        }
+        return false;
+    });
+};
+export { timeParser, randomId, getPluginsFromContext, drawWeb, initWeb, cbToWJ, findJson, findFJson, removeFromVuex };
