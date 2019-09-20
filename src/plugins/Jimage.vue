@@ -1,5 +1,10 @@
 <template>
-    <Jdiv :id="id" class="j-image" :class="{'is-focus':isFocus && isEditor}">
+    <Jdiv
+        :id="id"
+        class="j-image"
+        :class="{'is-focus':isFocus && isEditor}"
+        :style="struct.options.style"
+    >
         <template slot="input">
             <el-image
                 :src="struct.options.imgList[0] || ''"
@@ -40,8 +45,8 @@
                     </vd>
                 </div>
                 <div slot="footer">
-                    <el-button @click="onCancel">取消</el-button>
-                    <el-button @click="onSave" type="primary">保存</el-button>
+                    <el-button size="small" @click="onCancel">取消</el-button>
+                    <el-button size="small" @click="onSave" type="primary">保存</el-button>
                 </div>
             </el-dialog>
         </template>
