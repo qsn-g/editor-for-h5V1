@@ -148,4 +148,8 @@ const removeFromVuex = (deleteStruct) => {
         return false;
     });
 };
-export { timeParser, randomId, getPluginsFromContext, drawWeb, initWeb, cbToWJ, findJson, findFJson, removeFromVuex };
+
+const jumpTo = (link) => {
+    window.open(link);
+};
+export { timeParser, randomId, getPluginsFromContext, drawWeb, initWeb, cbToWJ, findJson, findFJson, removeFromVuex, jumpTo };
