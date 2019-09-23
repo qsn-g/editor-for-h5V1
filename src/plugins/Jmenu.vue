@@ -18,7 +18,7 @@
                     @click="clickMenuItem(item)"
                 >{{item.value}}</el-menu-item>
             </el-menu>
-            <el-dialog :title="`设置菜单`" :visible.sync="configVisible">
+            <el-dialog :title="`设置菜单`" v-if="configVisible" :visible.sync="configVisible">
                 <div class="select-model">
                     <span>选择模式:</span>
                     <el-switch

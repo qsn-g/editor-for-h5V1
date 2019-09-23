@@ -14,7 +14,12 @@
                     :prop="prop"
                 />
             </el-table>
-            <el-dialog v-loading="loading" :title="`设置表格`" :visible.sync="configVisible">
+            <el-dialog
+                v-loading="loading"
+                :title="`设置表格`"
+                v-if="configVisible"
+                :visible.sync="configVisible"
+            >
                 <el-table border :data="dataSource">
                     <el-table-column
                         v-for="prop in headers"

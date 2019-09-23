@@ -129,7 +129,10 @@ const cbToWJ = (struct) => {
         store.state.webJson = struct;
     }
 };
-
+/**
+ * 删除一个组件后也要将其从store里面的componentList删除
+ * @param {*} deleteStruct
+ */
 const removeFromVuex = (deleteStruct) => {
     if (deleteStruct.childNodes) {
         deleteStruct.childNodes.forEach((item) => {

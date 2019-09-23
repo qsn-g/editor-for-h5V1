@@ -7,7 +7,7 @@
     >
         <template slot="input">
             <el-carousel></el-carousel>
-            <el-dialog :title="`设置跑马灯`" :visible.sync="configVisible">
+            <el-dialog :title="`设置跑马灯`" v-if="configVisible" :visible.sync="configVisible">
                 <div slot="footer">
                     <el-button size="small" @click="onCancel">取消</el-button>
                     <el-button size="small" @click="onSave" type="primary">保存</el-button>

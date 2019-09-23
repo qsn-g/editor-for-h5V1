@@ -49,6 +49,25 @@
                         ></el-button>
                     </span>
                 </el-row>
+                <el-row>
+                    <span>比例按钮:</span>
+                    <span class="button-area">
+                        <el-button
+                            @click="changeSize(1)"
+                            type="success"
+                            size="mini"
+                            circle
+                            icon="el-icon-plus"
+                        ></el-button>
+                        <el-button
+                            @click="changeSize(-1)"
+                            type="success"
+                            size="mini"
+                            circle
+                            icon="el-icon-minus"
+                        ></el-button>
+                    </span>
+                </el-row>
                 <el-row style="flex-direction: column;align-items: flex-start">
                     <span>组件库:</span>
                     <span class="component-button">
@@ -164,12 +183,6 @@ export default {
                 }
             }
         },
-        initEventBus() {
-            eventBus.$on('openDialog', this.openDialog);
-        },
-        removeEventBus() {
-            eventBus.$off('openDialog', this.openDialog);
-        },
         addPlugin(name) {
             const componentObj = {
                 name,
@@ -203,6 +216,16 @@ export default {
                 this.resetFocus();
             });
         },
+        changeSize(addNum) {
+            const focusElem = this.$store.state.focusElem;
+            if (!focusElem.id) {
+                sendError('请选择组件');
+                return;
+            }
+            const flex = Number(focusElem.struct.options.style.flex) || 1;
+            const res = addNum + flex > 0 ? addNum + flex : 1;
+            focusElem.struct.options.style.flex = `${res}`;
+        },
         mouseMove() {
             document.onmousemove = (e) => {
                 if (e.clientX + 10 >= window.innerWidth) {
@@ -215,6 +238,12 @@ export default {
                 this.resetFocus();
                 e.preventDefault();
             };
+        },
+        initEventBus() {
+            eventBus.$on('openDialog', this.openDialog);
+        },
+        removeEventBus() {
+            eventBus.$off('openDialog', this.openDialog);
         },
         propConfig() {
             const focusElem = this.$store.state.focusElem;

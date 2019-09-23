@@ -10,7 +10,7 @@
                 :src="struct.options.imgList[0] || ''"
                 :preview-src-list="struct.options.imgList"
             ></el-image>
-            <el-dialog :title="`设置图片`" :visible.sync="configVisible">
+            <el-dialog :title="`设置图片`" v-if="configVisible" :visible.sync="configVisible">
                 <div class="preview-area">
                     <i class="el-icon-plus">添加图片 (第一张图将作为封面,可通过拖拽进行调整)</i>
                     <vd :options="{group: 'pir'}" v-model="imageUrlList">
