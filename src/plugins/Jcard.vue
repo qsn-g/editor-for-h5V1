@@ -8,17 +8,27 @@
         <template slot="input">
             <el-card>
                 <div slot="header">
-                    <span>卡片名称</span>
-                    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                    <span>{{ struct.options.cardValue.cardText }}</span>
+                    <el-button
+                        v-if="struct.options.cardValue.btLink"
+                        style="float: right; padding: 3px 0"
+                        type="text"
+                        @click="jumpTo(struct.options.cardValue.btLink)"
+                    >{{ struct.options.cardValue.btText }}</el-button>
                 </div>
                 <img
                     style="width:100%"
-                    src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                    src="https://shadowx.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
                 />
 
                 <div class="card-write"></div>
             </el-card>
             <el-dialog :title="`设置卡片`" v-if="configVisible" :visible.sync="configVisible">
+                <div class="header-area">
+                    <el-input placeholder="输入卡片名" v-model="setValue.cardText">
+                        <span slot="prepend">输入卡片名:</span>
+                    </el-input>
+                </div>
                 <div class="img-area">
                     <el-upload action>123</el-upload>
                 </div>
@@ -34,6 +44,7 @@
 
 <script>
 import FormatMixin from '@/mixins/format';
+import { jumpTo } from '@/js/util';
 
 export default {
     name: 'Jcard',
@@ -41,6 +52,7 @@ export default {
     data() {
         return {
             name: 'Jcard',
+            jumpTo,
             setValue: {
                 imgUrl: '',
                 textArr: [],
@@ -50,7 +62,31 @@ export default {
             },
         };
     },
+    beforeMount() {
+        if (!this.struct.options.cardValue) {
+            this.struct.options.cardValue = {
+                imgUrl: '',
+                textArr: [],
+                btLink: '',
+                btText: '默认按钮',
+                cardText: '默认卡片',
+            };
+        }
+        // this.setValue = this.copyStruct();
+        console.log(this.setValue);
+    },
     methods: {
+        copyStruct() {
+            const t = this.struct.options.cardValue;
+            const o = {
+                imgUrl: t.imgUrl,
+                textArr: [...t.textArr],
+                btLink: t.btLink,
+                btText: t.btText,
+                cardText: '',
+            };
+            return o;
+        },
         onSave() {
             this.configVisible = false;
         },

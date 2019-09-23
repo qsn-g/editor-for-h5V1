@@ -15,7 +15,7 @@
                 <el-menu-item
                     v-for="item in struct.options.menuValue.linkData"
                     :key="item.id"
-                    @click="clickMenuItem(item)"
+                    @click="jumpTo(item.link)"
                 >{{item.value}}</el-menu-item>
             </el-menu>
             <el-dialog :title="`设置菜单`" v-if="configVisible" :visible.sync="configVisible">
@@ -85,6 +85,7 @@
 
 <script>
 import FormatMixin from '@/mixins/format';
+import { jumpTo } from '@/js/util';
 
 export default {
     name: 'Jmenu',
@@ -103,6 +104,7 @@ export default {
                 linkData: [],
             },
             oldValue: {},
+            jumpTo,
         };
     },
     beforeMount() {
@@ -139,9 +141,6 @@ export default {
         },
         deleteMenu(index, arr) {
             arr.splice(index, 1);
-        },
-        clickMenuItem(item) {
-            window.open(item.link);
         },
         addMenu() {
             this.setValue.linkData.push({
