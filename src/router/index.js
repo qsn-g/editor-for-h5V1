@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import webTable from '../components/webTable';
 import webEditor from '../components/editor';
 import webUI from '../components/webUI';
+import createWeb from '../components/createWeb';
 
 Vue.use(Router);
 
@@ -22,6 +23,11 @@ export default new Router({
             component: webUI,
             path: '/getWebUI',
             name: 'getWebUI',
+        },
+        {
+            component: createWeb,
+            path: '/createWeb',
+            name: 'createWeb',
         },
     ],
 });

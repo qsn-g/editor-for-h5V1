@@ -30,7 +30,7 @@ export default {
                     class: 'el-icon-search',
                 },
                 {
-                    index: '/getWebUI',
+                    index: '/createWeb',
                     label: '生成网页',
                     class: 'el-icon-refresh',
                 },
