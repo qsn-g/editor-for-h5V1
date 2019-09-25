@@ -42,7 +42,8 @@
                             <template slot-scope="{ row }">
                                 <label
                                     :contenteditable="uData"
-                                    @dblclick="() => {uData = true}"
+                                    @dblclick="uData = true"
+                                    @blur="modifyData(row, $event, 'value')"
                                 >{{ row.value }}</label>
                             </template>
                         </el-table-column>
@@ -50,7 +51,8 @@
                             <template slot-scope="{ row }">
                                 <label
                                     :contenteditable="uData"
-                                    @dblclick="() => {uData = true}"
+                                    @dblclick="uData = true"
+                                    @blur="modifyData(row, $event, 'link')"
                                 >{{ row.link }}</label>
                             </template>
                         </el-table-column>
@@ -129,6 +131,10 @@ export default {
                 activeColor: t.activeColor,
                 linkData: [...t.linkData],
             };
+        },
+        modifyData(row, e, type) {
+            const newValue = e.target.innerText;
+            row[type] = newValue;
         },
         onSave() {
             this.struct.options.menuValue = this.setValue;

@@ -25,6 +25,11 @@ export default {
             menuList: [
                 { index: '', label: 'JWeb', class: 'el-icon-menu' },
                 {
+                    index: '/introduce',
+                    label: '使用说明',
+                    class: 'el-icon-info',
+                },
+                {
                     index: '/webTable',
                     label: '查看网页',
                     class: 'el-icon-search',

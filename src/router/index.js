@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import webTable from '../components/webTable';
-import webEditor from '../components/editor';
-import webUI from '../components/webUI';
-import createWeb from '../components/createWeb';
+import webTable from '../page/webTable';
+import webEditor from '../page/editor';
+import webUI from '../page/webUI';
+import introduce from '../page/introduce';
+import createWeb from '../page/createWeb';
 
 Vue.use(Router);
 
@@ -28,6 +29,11 @@ export default new Router({
             component: createWeb,
             path: '/createWeb',
             name: 'createWeb',
+        },
+        {
+            component: introduce,
+            path: '/introduce',
+            name: 'introduce',
         },
     ],
 });
