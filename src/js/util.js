@@ -119,7 +119,7 @@ const cbToWJ = (struct) => {
             });
         });
         componentList.some((item, index) => {
-            if (!item.cJson.id) {
+            if (!item.cJson.id && index !== 0) {
                 componentList.splice(index, 1);
                 return true;
             }
