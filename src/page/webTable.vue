@@ -28,7 +28,7 @@
                             :contenteditable="uName"
                             @dblclick="() => {uName = true}"
                             @blur="updateName($event, scope.row)"
-                        >{{scope.row.webName}}</label>
+                        >{{scope.row.webName }}</label>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
@@ -113,8 +113,12 @@ export default {
             try {
                 const after = e.target.innerText;
                 const before = webInfo.webName;
+                if (!/\S/.test(after)) {
+                    sendError('必须输入字符');
+                    e.target.innerText = before;
+                    return;
+                }
                 if (after === before) return;
-                // eslint-disable-next-line no-param-reassign
                 webInfo.webName = after;
                 const res = await post({
                     url: '/updateName',
