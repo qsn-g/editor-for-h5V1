@@ -1,5 +1,5 @@
 <template>
-    <div id="webTable">
+    <div v-loading="loading" id="webTable">
         <el-row class="buttonList">
             <el-button
                 type="primary"
@@ -99,6 +99,7 @@ export default {
                 });
                 webJson = res.data;
             }
+            this.loading = true;
             this.$router.push({
                 name: 'webEditor',
                 params: {
