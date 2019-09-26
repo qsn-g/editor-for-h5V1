@@ -1,11 +1,16 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 // 因组件较多，使用组件懒加载
-const webEditor = () => import('../page/editor.vue');
-const webTable = () => import('../page/webTable.vue');
-const webUI = () => import('../page/webUI');
-const introduce = () => import('../page/introduce.vue');
-const createWeb = () => import('../page/createWeb.vue');
+import webEditor from '../page/editor';
+import webTable from '../page/webTable';
+import webUI from '../page/webUI';
+import introduce from '../page/introduce';
+import createWeb from '../page/createWeb';
+// const webEditor = () => import('../page/editor.vue');
+// const webTable = () => import('../page/webTable.vue');
+// const webUI = () => import('../page/webUI');
+// const introduce = () => import('../page/introduce.vue');
+// const createWeb = () => import('../page/createWeb.vue');
 
 Vue.use(Router);
 
