@@ -72,7 +72,6 @@
                     <span>组件库:</span>
                     <span class="component-button">
                         <el-button
-                            round
                             size="small"
                             type="warning"
                             v-for="plugin in plugins"
@@ -82,7 +81,12 @@
                     </span>
                 </el-row>
 
-                <el-button class="upload" type="info" circle icon="el-icon-upload" @click="saveWj"></el-button>
+                <el-button
+                    class="upload"
+                    type="primary"
+                    icon="el-icon-upload"
+                    @click="saveWj"
+                >保存页面内容</el-button>
             </div>
         </el-drawer>
         <el-row id="workSpace">
@@ -307,14 +311,20 @@ export default {
 .component-button {
     flex-wrap: wrap;
     display: flex;
+    justify-content: center;
 }
 .component-button .el-button {
-    margin-top: 10px;
+    margin: 5px 5px 0px 5px;
 }
 #workSpace {
     display: flex;
     flex-direction: row;
     flex: 1;
     overflow: hidden;
+}
+.content .upload {
+    margin-top: 15px;
+    font-size: 14px;
+    border-radius: 0px;
 }
 </style>

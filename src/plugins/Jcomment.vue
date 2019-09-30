@@ -21,27 +21,30 @@
             <div class="comment" style="flex:1">
                 <h2>相关评论</h2>
                 <ul>
-                    <li
-                        v-for="item in struct.options.commentValue.data"
-                        :key="item.id"
-                    >{{item.c}} {{item.city}}</li>
+                    <li v-for="item in struct.options.commentValue.data" :key="item.id">
+                        <label>{{item.c}}</label>
+                        <span>{{item.city}}</span>
+                    </li>
                 </ul>
             </div>
             <div class="publish-comment">
-                <el-input type="textarea" v-model="inputComment"></el-input>
-                <el-button @click="addComment">12</el-button>
+                <RichText />
             </div>
         </template>
     </Jdiv>
 </template>
 
 <script>
+import RichText from '@/components/richText';
 import FormatMixin from '@/mixins/format';
 import { sendWarm } from '@/js/msgBox';
 
 export default {
     name: 'Jcomment',
     mixins: [FormatMixin],
+    components: {
+        RichText,
+    },
     data() {
         return {
             name: 'Jcomment',
@@ -82,6 +85,7 @@ export default {
         star() {
             localStorage.setItem('starNum', true);
             this.stared = 'true';
+            this.struct.options.commentValue.starNum += 1;
         },
     },
 };
@@ -100,7 +104,6 @@ export default {
 .j-comment .topic h2 {
     border-bottom: 1px solid #ebeef5;
     padding: 10px 20px;
-    text-align: left;
     font-weight: 500;
     letter-spacing: 2px;
 }
@@ -119,5 +122,32 @@ export default {
     font-size: 14px;
     color: #606266;
     padding: 0px 10px;
+}
+.j-comment .comment {
+    padding: 0px 10px;
+}
+.j-comment .comment h2 {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ebeef5;
+    font-weight: 400;
+}
+.j-comment .comment ul {
+    overflow: auto;
+}
+.j-comment .comment li {
+    color: #606266;
+    font-size: 14px;
+    border-bottom: 1px solid #ebeef5;
+}
+.j-comment .comment li label {
+    padding: 10px 30px;
+    display: block;
+}
+.j-comment .comment li span {
+    color: #c2c2c5;
+    display: block;
+    text-align: right;
+    font-size: 7px;
+    padding: 5px 10px;
 }
 </style>
