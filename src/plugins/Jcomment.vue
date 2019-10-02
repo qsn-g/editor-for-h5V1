@@ -28,7 +28,7 @@
                 </ul>
             </div>
             <div class="publish-comment">
-                <RichText />
+                <RichText v-model="textData" :send-comment="sendComment" />
             </div>
         </template>
     </Jdiv>
@@ -51,6 +51,13 @@ export default {
             count: 0,
             stared: localStorage.getItem('starNum'),
             cityInfo: window.returnCitySN,
+            textData: {
+                text: '',
+                style: {
+                    color: '',
+                    'font-size': '14px',
+                },
+            },
             inputComment: '',
             setValue: {
                 starNum: 100,
@@ -87,6 +94,9 @@ export default {
             this.stared = 'true';
             this.struct.options.commentValue.starNum += 1;
         },
+        sendComment() {
+            console.log(this.textData);
+        },
     },
 };
 </script>
@@ -94,6 +104,7 @@ export default {
 <style scoped>
 .j-comment {
     flex-direction: column;
+    overflow: auto;
 }
 .j-comment .topic {
     padding: 10px 10px;
